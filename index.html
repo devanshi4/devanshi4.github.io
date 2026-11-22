@@ -201,10 +201,11 @@ footer{padding-block:28px;color:var(--muted);font-size:.85rem;border-top:1px sol
 .todo{background:var(--warm-soft);color:var(--warm);border-radius:4px;padding:0 4px;font-family:var(--mono);font-size:.85em}
 
 /* what I bring */
-.bring{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.bring{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 @media (max-width:900px){.bring{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:480px){.bring{grid-template-columns:1fr}}
-.bring div{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:8px;align-content:start}
+.bring div{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:8px;grid-template-rows:auto 1fr auto}
+.bring .proof{font-family:var(--mono);font-size:.74rem;color:var(--accent);padding-top:10px;border-top:1px solid var(--line)}
 .bring b{font-family:var(--display);font-size:1.08rem;line-height:1.25}
 .bring p{color:var(--muted);font-size:.93rem}
 .bring .cookie{background:var(--warm-soft);border-color:transparent}
@@ -338,10 +339,12 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
       <h2>Why you might want me on yours</h2>
     </div>
     <div class="bring">
-      <div><span class="ico" aria-hidden="true">🔎</span><b>I find the problem behind the number</b><p>When two reports disagree, I trace it to the join, filter or source that caused it, instead of patching the total.</p></div>
-      <div><span class="ico" aria-hidden="true">🧱</span><b>I fix it where it starts</b><p>Tests and validation at the point data enters, so bad records are stopped at creation, not discovered in a meeting.</p></div>
-      <div><span class="ico" aria-hidden="true">💬</span><b>I speak dashboard and pipeline</b><p>I started as an analyst, so I build for the people reading the report and can explain a data issue without jargon.</p></div>
-      <div class="cookie"><span class="ico" aria-hidden="true">🍪</span><b>I bring the cookies</b><p>My cookies are the first thing gone at every company potluck. Team morale is part of the job.</p></div>
+      <div><b>Build pipelines, batch and streaming</b><p>I get data from where it's created to where it's needed, on a schedule or as it happens.</p><span class="proof">Kafka · Debezium CDC · Kinesis · Lambda · Airflow · Dagster</span></div>
+      <div><b>Model data people can use</b><p>Layered dbt models and star schemas, and one source of truth when teams have conflicting numbers.</p><span class="proof">dbt · Snowflake · BigQuery · dbt Semantic Layer</span></div>
+      <div><b>Make it fast and cheap</b><p>Tuned Spark ETL for a payments platform and cut processing costs by 40%. Incremental loads and partitioning keep costs flat as data grows.</p><span class="proof">Spark · PySpark · Trino · Iceberg</span></div>
+      <div><b>Keep it reliable</b><p>Tests between layers, validation where data enters, and re-runs that never create duplicates, so bad data is caught before anyone reports on it.</p><span class="proof">dbt tests · constraints · idempotent loads</span></div>
+      <div><b>Run it on cloud infrastructure</b><p>Pipelines that live in version control and deploy the same way every time, with only the access they need.</p><span class="proof">AWS · GCP · Terraform · Docker · Git CI/CD · IAM</span></div>
+      <div><b>Work with the people who use the data</b><p>I started as an analyst, and I've built feature pipelines with data scientists and ML engineers. I can explain a data issue without jargon.</p><span class="proof">Analysts · data scientists · product teams</span></div>
     </div>
   </section>
 
@@ -501,7 +504,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
             <tbody></tbody>
           </table>
         </div>
-        <p class="foot">6 rows returned. Small dataset on purpose: still sampling.</p>
+        <p class="foot">7 rows returned. Small dataset on purpose: still sampling.</p>
       </div>
 
       <div class="panel">
@@ -744,6 +747,7 @@ const FOOD=[
   {cuisine:"Mediterranean", order:"Falafel, hummus, halloumi", rating:9, note:"Falafel: the most reliable vegetarian join key"},
   {cuisine:"Thai", order:"Green curry with tofu, pad thai", rating:8, note:"Spice level is a parameter. Tune carefully."},
   {cuisine:"Mexican", order:"Bean burrito, guacamole", rating:9, note:"Guacamole is a core table, not an optional join"},
+  {cuisine:"Homemade", order:"My own cookies (baked by me)", rating:10, note:"Shipped to every office potluck. Zero rows left over."},
   {cuisine:"Ethiopian", order:"Misir wot with injera", rating:null, note:"On the list. Pending first load."}
 ];
 let foodSort={k:"rating",dir:"desc"};
