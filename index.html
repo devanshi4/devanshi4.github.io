@@ -501,7 +501,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
             <tbody></tbody>
           </table>
         </div>
-        <p class="foot">5 rows returned. Small dataset on purpose: still sampling.</p>
+        <p class="foot">6 rows returned. Small dataset on purpose: still sampling.</p>
       </div>
 
       <div class="panel">
@@ -743,7 +743,8 @@ const FOOD=[
   {cuisine:"Italian", order:"Margherita pizza, pesto pasta", rating:9, note:"Has never failed a data-quality check"},
   {cuisine:"Mediterranean", order:"Falafel, hummus, halloumi", rating:9, note:"Falafel: the most reliable vegetarian join key"},
   {cuisine:"Thai", order:"Green curry with tofu, pad thai", rating:8, note:"Spice level is a parameter. Tune carefully."},
-  {cuisine:"Mexican", order:"Bean burrito, guacamole", rating:null, note:"Up next. Pending first load."}
+  {cuisine:"Mexican", order:"Bean burrito, guacamole", rating:9, note:"Guacamole is a core table, not an optional join"},
+  {cuisine:"Ethiopian", order:"Misir wot with injera", rating:null, note:"On the list. Pending first load."}
 ];
 let foodSort={k:"rating",dir:"desc"};
 const esc=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
@@ -814,10 +815,10 @@ const QUIZ=[
     {e:"🥪", t:"I don't cut it", type:"The Streamer", trait:"Why wait? You process everything the moment it arrives."}
   ]},
   {q:"At a new restaurant, you…", a:[
-    {e:"📖", t:"Read the whole menu first", trait:"profiles the data before writing a single query."},
-    {e:"🔁", t:"Order what I always order", trait:"trusts what's already proven in production."},
-    {e:"⭐", t:"Check reviews before going", trait:"reads the docs before the incident, not after."},
-    {e:"🙋", t:"Ask the server to pick", trait:"knows the fastest answer comes from the domain expert."}
+    {e:"📖", t:"Read the menu beforehand and practice my order", trait:"tests everything in staging before it touches production."},
+    {e:"🙋", t:"Ask the server to pick", trait:"knows the fastest answer comes from the domain expert."},
+    {e:"🔁", t:"Stick to my regular favorite", trait:"trusts what's already proven in production."},
+    {e:"🍽️", t:"Order two dishes and share", trait:"never ships a decision without an A/B test."}
   ]}
 ];
 const picks=[null,null];
