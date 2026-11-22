@@ -325,7 +325,7 @@ footer{padding-block:28px;color:var(--muted);font-size:.85rem;border-top:1px sol
             <li><strong>Ambiguity goes to review.</strong> A work order with no house number could belong to two towers. The pipeline flags it instead of guessing.</li>
             <li><strong>Conflicts follow explicit survivorship rules.</strong> When field ops reports an equipment swap newer than inventory, the newer, more specific source wins.</li>
           </ul>
-          <div class="links" style="margin-top:14px"><a href="https://github.com/devanshi4/telecom_aws" target="_blank" rel="noopener">View code →</a></div>
+          <div class="links" style="margin-top:14px"><a href="#contact">Code available on request →</a></div>
         </div>
       </div>
     </div>
@@ -529,7 +529,7 @@ const PROJECTS = [
       "<b>Planned next:</b> memory spill, partition sizing, join strategies, and out-of-memory failures.",
       "<b>A finding so far:</b> removing skew or spill doesn't always reduce total runtime, so measure, don't assume."
     ],
-    repo:"spark-perf-lab"
+    repo:"spark-perf-lab", private:true
   },
   {
     name:"Yelp Reviews Analytics", tag:"Analytics engineering", f:["dbt"],
@@ -582,7 +582,7 @@ grid.innerHTML = PROJECTS.map(p=>`
         <ul>${p.why.map(w=>`<li>${w}</li>`).join("")}</ul>
       </div>
     </details>
-    <div class="links"><a href="https://github.com/devanshi4/${p.repo}" target="_blank" rel="noopener">View code →</a></div>
+    <div class="links">${p.private ? `<a href="#contact">Code available on request →</a>` : `<a href="https://github.com/devanshi4/${p.repo}" target="_blank" rel="noopener">View code →</a>`}</div>
   </article>`).join("");
 
 document.querySelectorAll("#filters .chip").forEach(c=>c.addEventListener("click",()=>{
