@@ -199,6 +199,73 @@ details[open] summary::before{content:"− "}
 .contact-row{display:flex;flex-wrap:wrap;gap:10px}
 footer{padding-block:28px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
 .todo{background:var(--warm-soft);color:var(--warm);border-radius:4px;padding:0 4px;font-family:var(--mono);font-size:.85em}
+
+/* what I bring */
+.bring{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.bring{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.bring{grid-template-columns:1fr}}
+.bring div{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:8px;align-content:start}
+.bring b{font-family:var(--display);font-size:1.08rem;line-height:1.25}
+.bring p{color:var(--muted);font-size:.93rem}
+.bring .cookie{background:var(--warm-soft);border-color:transparent}
+.bring .cookie b{color:var(--warm)}
+.bring .ico{font-size:1.4rem;line-height:1}
+
+/* off the clock */
+.fun-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.fun-grid{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;gap:14px;min-width:0}
+.panel .sub{color:var(--muted);font-size:.93rem}
+.sql{font-family:var(--mono);font-size:.8rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre;line-height:1.55}
+.sql .k{color:var(--accent);font-weight:500}
+.sql .o{color:var(--warm);font-weight:500}
+.tbl-wrap{overflow-x:auto}
+table.food{width:100%;border-collapse:collapse;font-size:.9rem}
+.food th{text-align:left;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding:0}
+.food th button{all:unset;cursor:pointer;display:block;padding:8px 8px;width:100%;box-sizing:border-box}
+.food th button:hover,.food th button:focus-visible{color:var(--accent)}
+.food th button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.food th[aria-sort="ascending"] button::after{content:" ↑"}
+.food th[aria-sort="descending"] button::after{content:" ↓"}
+.food td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.food tr:last-child td{border-bottom:0}
+.food td.c{font-weight:600;white-space:nowrap}
+.food td small{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
+.food td.r{font-variant-numeric:tabular-nums;white-space:nowrap;width:84px}
+@media (max-width:480px){.food td.c{white-space:normal}.food td,.food th button{padding-left:5px;padding-right:5px}}
+.bar{display:block;height:6px;border-radius:3px;background:var(--line);margin-top:5px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:3px}
+.null{font-family:var(--mono);font-size:.8rem;color:var(--warm);background:var(--warm-soft);padding:1px 6px;border-radius:4px}
+.foot{font-size:.82rem;color:var(--muted)}
+
+.board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:100%;max-width:300px;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--line);justify-self:center}
+.sq{border:0;padding:0;margin:0;min-width:0;min-height:0;overflow:hidden;display:grid;place-items:center;font-size:clamp(1.2rem,5.4vw,1.75rem);line-height:1;cursor:pointer;position:relative;color:#111;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Apple Symbols",serif}
+.sq.l{background:#e9edf7} .sq.d{background:#8d9cc9}
+.sq:hover{filter:brightness(1.07)}
+.sq.wrong{animation:nope .35s}
+.sq.win{background:#7fd1a4}
+.sq .co{position:absolute;left:3px;bottom:1px;font:500 9px var(--mono);color:#33405f;opacity:.75}
+.sq .wp{color:#fff;text-shadow:0 0 2px #000,0 0 1px #000}
+@keyframes nope{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.chess-msg{min-height:3em;font-size:.93rem}
+.chess-msg.good{color:var(--ok)}
+.chess-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.linkbtn{background:none;border:0;color:var(--accent);font:600 .88rem var(--body);cursor:pointer;padding:0}
+
+.quiz{margin-top:16px}
+.qs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+@media (max-width:760px){.qs{grid-template-columns:1fr}}
+.q{display:grid;gap:10px;align-content:start}
+.q h4{margin:0;font-family:var(--display);font-size:1.1rem}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.qopt{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:10px 12px;text-align:left;font:500 .92rem var(--body);cursor:pointer;display:flex;gap:8px;align-items:center}
+.qopt:hover{border-color:var(--accent)}
+.qopt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.qopt .e{font-size:1.15rem}
+.trait{font-size:.88rem;color:var(--muted);min-height:2.8em}
+.result{border-radius:12px;padding:18px;background:var(--bg);border:1px dashed var(--line);display:grid;gap:6px}
+.result.done{background:var(--accent-soft);border:1px solid transparent}
+.result b{font-family:var(--display);font-size:1.3rem}
 </style>
 
 </head>
@@ -210,6 +277,7 @@ footer{padding-block:28px;color:var(--muted);font-size:.85rem;border-top:1px sol
       <a href="#about" class="opt">About</a>
       <a href="#work">Projects</a>
       <a href="#experience" class="opt">Experience</a>
+      <a href="#fun" class="opt">Off the clock</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
@@ -261,6 +329,19 @@ footer{padding-block:28px;color:var(--muted);font-size:.85rem;border-top:1px sol
           <div class="stack-row"><div class="label">AI &amp; BI</div><div>Locally hosted LLMs (Llama, Mistral), LLM evaluation, Tableau, Looker, Power BI</div></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="bring">
+    <div class="sec-head">
+      <p class="label">What I bring to a team</p>
+      <h2>Why you might want me on yours</h2>
+    </div>
+    <div class="bring">
+      <div><span class="ico" aria-hidden="true">🔎</span><b>I find the problem behind the number</b><p>When two reports disagree, I trace it to the join, filter or source that caused it, instead of patching the total.</p></div>
+      <div><span class="ico" aria-hidden="true">🧱</span><b>I fix it where it starts</b><p>Tests and validation at the point data enters, so bad records are stopped at creation, not discovered in a meeting.</p></div>
+      <div><span class="ico" aria-hidden="true">💬</span><b>I speak dashboard and pipeline</b><p>I started as an analyst, so I build for the people reading the report and can explain a data issue without jargon.</p></div>
+      <div class="cookie"><span class="ico" aria-hidden="true">🍪</span><b>I bring the cookies</b><p>My cookies are the first thing gone at every company potluck. Team morale is part of the job.</p></div>
     </div>
   </section>
 
@@ -393,6 +474,59 @@ footer{padding-block:28px;color:var(--muted);font-size:.85rem;border-top:1px sol
     <div class="edu">
       <div><b>M.S. Electrical &amp; Computer Engineering</b><span>University of Southern California · 2023</span></div>
       <div><b>B.Tech. Electrical &amp; Communication Engineering</b><span>Gujarat Technological University · 2021</span></div>
+    </div>
+  </section>
+
+  <section id="fun">
+    <div class="sec-head">
+      <p class="label">Off the clock</p>
+      <h2>Outside of work, I'm still collecting data</h2>
+      <p>Mostly about food, and about how many ways I can lose at chess.</p>
+    </div>
+
+    <div class="fun-grid">
+      <div class="panel">
+        <div>
+          <h3>My food log</h3>
+          <p class="sub">I'm a vegetarian and a picky eater, so every new restaurant is a careful experiment. Click a column to re-run the query.</p>
+        </div>
+        <div class="sql" id="foodSql"></div>
+        <div class="tbl-wrap">
+          <table class="food" id="foodTable">
+            <thead><tr>
+              <th scope="col" data-k="cuisine"><button type="button">cuisine</button></th>
+              <th scope="col" data-k="order"><button type="button">go_to_order</button></th>
+              <th scope="col" data-k="rating" aria-sort="descending"><button type="button">rating</button></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="foot">5 rows returned. Small dataset on purpose: still sampling.</p>
+      </div>
+
+      <div class="panel">
+        <div>
+          <h3>Learning chess</h3>
+          <p class="sub">I'm very new and mostly losing on chess.com. This is the first pattern I learned. White to move: can you find checkmate in one?</p>
+        </div>
+        <div class="board" id="board" role="grid" aria-label="Chess puzzle board"></div>
+        <div class="chess-row">
+          <p class="chess-msg" id="chessMsg" aria-live="polite">Click the square where the white rook should go.</p>
+          <button class="linkbtn" type="button" id="chessReset">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel quiz">
+      <div>
+        <h3>What kind of data engineer are you?</h3>
+        <p class="sub">Two questions, no wrong answers. Data engineering experience not required.</p>
+      </div>
+      <div class="qs" id="quiz"></div>
+      <div class="result" id="quizResult" aria-live="polite">
+        <span class="label">Your result</span>
+        <p>Answer both questions to find out.</p>
+      </div>
     </div>
   </section>
 
@@ -602,6 +736,113 @@ document.getElementById("copyEmail").addEventListener("click", async ()=>{
   catch(e){ const r=document.createRange(); r.selectNodeContents(document.getElementById("copyEmail").firstChild.parentNode); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); lbl.textContent="Selected"; }
   setTimeout(()=>lbl.textContent="Copy",2000);
 });
+
+/* ---------- Food log ---------- */
+const FOOD=[
+  {cuisine:"Indian", order:"Paneer anything, dal, dosa", rating:10, note:"The baseline every other result is compared to"},
+  {cuisine:"Italian", order:"Margherita pizza, pesto pasta", rating:9, note:"Has never failed a data-quality check"},
+  {cuisine:"Mediterranean", order:"Falafel, hummus, halloumi", rating:9, note:"Falafel: the most reliable vegetarian join key"},
+  {cuisine:"Thai", order:"Green curry with tofu, pad thai", rating:8, note:"Spice level is a parameter. Tune carefully."},
+  {cuisine:"Mexican", order:"Bean burrito, guacamole", rating:null, note:"Up next. Pending first load."}
+];
+let foodSort={k:"rating",dir:"desc"};
+const esc=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+function drawFood(){
+  const {k,dir}=foodSort;
+  const rows=[...FOOD].sort((a,b)=>{
+    const x=a[k], y=b[k];
+    if(x===null) return 1; if(y===null) return -1;
+    const c = typeof x==="number" ? x-y : x.localeCompare(y);
+    return dir==="asc"?c:-c;
+  });
+  const col = k==="order"?"go_to_order":k;
+  document.getElementById("foodSql").innerHTML =
+    `<span class="k">SELECT</span> cuisine, go_to_order, rating\n<span class="k">FROM</span> food_log\n<span class="k">WHERE</span> vegetarian = <span class="o">TRUE</span>\n<span class="k">ORDER BY</span> ${col} <span class="k">${dir.toUpperCase()}</span>${k==="rating"?' <span class="k">NULLS LAST</span>':""};`;
+  document.querySelector("#foodTable tbody").innerHTML = rows.map(r=>`<tr>
+    <td class="c">${esc(r.cuisine)}</td>
+    <td>${esc(r.order)}<small>${esc(r.note)}</small></td>
+    <td class="r">${r.rating===null?'<span class="null">NULL</span>':`${r.rating}/10<span class="bar"><i style="width:${r.rating*10}%"></i></span>`}</td></tr>`).join("");
+  document.querySelectorAll("#foodTable th").forEach(th=>{
+    if(th.dataset.k===k) th.setAttribute("aria-sort", dir==="asc"?"ascending":"descending"); else th.removeAttribute("aria-sort");
+  });
+}
+document.querySelectorAll("#foodTable th button").forEach(b=>b.addEventListener("click",()=>{
+  const k=b.parentElement.dataset.k;
+  foodSort = foodSort.k===k ? {k, dir: foodSort.dir==="asc"?"desc":"asc"} : {k, dir: k==="rating"?"desc":"asc"};
+  drawFood();
+}));
+drawFood();
+
+/* ---------- Chess puzzle: back-rank mate, Ra1-a8# ---------- */
+const START={a1:"wR", g1:"wK", f2:"wP", g2:"wP", h2:"wP", g8:"bK", f7:"bP", g7:"bP", h7:"bP"};
+const GLYPH={wR:"♜", wK:"♚", wP:"♟", bK:"♚", bP:"♟"};
+let pos={...START}, solved=false;
+const boardEl=document.getElementById("board"), chessMsg=document.getElementById("chessMsg");
+function drawBoard(win){
+  let h="";
+  for(let r=8;r>=1;r--) for(let f=0;f<8;f++){
+    const sq="abcdefgh"[f]+r, light=(f+r)%2===1, pc=pos[sq];
+    const co=(f===0?r:"")+(r===1?"abcdefgh"[f]:"");
+    h+=`<button type="button" class="sq ${light?"l":"d"}${win&&sq==="a8"?" win":""}" data-sq="${sq}" aria-label="${sq}${pc?" "+(pc[0]==="w"?"white ":"black ")+({R:"rook",K:"king",P:"pawn"})[pc[1]]:""}">${pc?`<span class="${pc[0]==="w"?"wp":""}">${GLYPH[pc]}</span>`:""}${co?`<span class="co">${co}</span>`:""}</button>`;
+  }
+  boardEl.innerHTML=h;
+}
+boardEl.addEventListener("click",e=>{
+  const b=e.target.closest(".sq"); if(!b||solved) return;
+  if(b.dataset.sq==="a8"){
+    pos={...START}; delete pos.a1; pos.a8="wR"; solved=true; drawBoard(true);
+    chessMsg.className="chess-msg good";
+    chessMsg.textContent="Checkmate! Rook to a8. The black king is trapped behind his own pawns. Better than I did the first time.";
+  } else {
+    b.classList.remove("wrong"); void b.offsetWidth; b.classList.add("wrong");
+    chessMsg.className="chess-msg";
+    chessMsg.textContent="Not that one. Hint: look at the black king's back row.";
+  }
+});
+document.getElementById("chessReset").addEventListener("click",()=>{
+  pos={...START}; solved=false; drawBoard(false);
+  chessMsg.className="chess-msg"; chessMsg.textContent="Click the square where the white rook should go.";
+});
+drawBoard(false);
+
+/* ---------- Quiz ---------- */
+const QUIZ=[
+  {q:"How do you cut your sandwich?", a:[
+    {e:"◸", t:"Diagonally", type:"The Optimizer", trait:"More edge per bite. You'd rewrite a query just to shave off two seconds."},
+    {e:"▯", t:"Straight down the middle", type:"The Modeler", trait:"Clean, predictable halves. You love a well-defined schema."},
+    {e:"▦", t:"Into little squares", type:"The Batch Processor", trait:"Small, even chunks. You'd tune Spark partitions for fun."},
+    {e:"🥪", t:"I don't cut it", type:"The Streamer", trait:"Why wait? You process everything the moment it arrives."}
+  ]},
+  {q:"At a new restaurant, you…", a:[
+    {e:"📖", t:"Read the whole menu first", trait:"profiles the data before writing a single query."},
+    {e:"🔁", t:"Order what I always order", trait:"trusts what's already proven in production."},
+    {e:"⭐", t:"Check reviews before going", trait:"reads the docs before the incident, not after."},
+    {e:"🙋", t:"Ask the server to pick", trait:"knows the fastest answer comes from the domain expert."}
+  ]}
+];
+const picks=[null,null];
+const quizEl=document.getElementById("quiz"), resEl=document.getElementById("quizResult");
+quizEl.innerHTML=QUIZ.map((q,qi)=>`<div class="q"><h4>${q.q}</h4>
+  <div class="opts" role="group" aria-label="${q.q}">${q.a.map((a,ai)=>`<button type="button" class="qopt" aria-pressed="false" data-q="${qi}" data-a="${ai}"><span class="e" aria-hidden="true">${a.e}</span>${a.t}</button>`).join("")}</div>
+  <p class="trait" id="trait${qi}"></p></div>`).join("");
+quizEl.addEventListener("click",e=>{
+  const b=e.target.closest(".qopt"); if(!b) return;
+  const qi=+b.dataset.q, ai=+b.dataset.a; picks[qi]=ai;
+  quizEl.querySelectorAll(`.qopt[data-q="${qi}"]`).forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
+  const a=QUIZ[qi].a[ai];
+  document.getElementById("trait"+qi).textContent = qi===0 ? a.trait : "You're the engineer who "+a.trait;
+  if(picks[0]!==null && picks[1]!==null){
+    const t=QUIZ[0].a[picks[0]], m=QUIZ[1].a[picks[1]];
+    resEl.className="result done";
+    resEl.innerHTML=`<span class="label">Your result</span><b>${t.type}</b><p>${t.trait.split(". ")[1]||t.trait} And you're the kind of engineer who ${m.trait} Tell me your result when you reach out.</p>`;
+  }
+});
+
+/* ---------- For the engineers who open DevTools ---------- */
+try{
+  console.log("%cHi, fellow engineer 👋","font:700 18px system-ui;color:#2f47d6");
+  console.log("%cYou opened DevTools, so you're my kind of person.\nNo framework here: one HTML file, hand-written CSS and JS, hosted on GitHub Pages.\nIf you'd build it differently, I'd love to hear how: devanshipandya44@gmail.com\n\nSELECT * FROM candidates WHERE checks_the_console = TRUE;\n-- 1 row returned 🍪","font:13px ui-monospace,monospace;line-height:1.5");
+}catch(e){}
 </script>
 </body>
 </html>
