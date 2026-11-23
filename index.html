@@ -1,6 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Devanshi Pandya</title>
@@ -18,8 +16,8 @@ img{max-width:100%}
 </style>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
 <style>
 /* Layout: a single reading column that widens for project grids; sections read top-down like a pipeline (source -> work -> output). */
 :root{
@@ -360,19 +358,20 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
         <span class="pill">In progress · built module by module</span>
         <h3>Telecom Entity Resolution &amp; Iceberg Lab</h3>
         <p>Three systems describe the same cell sites: network inventory, RF planning and field operations. They share <strong>no common ID</strong>. Names are abbreviated, addresses misspelled, coordinates rounded. This project works out which records describe the same physical site, builds one canonical table with a crosswalk back to every source ID, and maintains it with Spark SQL and Iceberg, first locally and then on AWS.</p>
+        <p><strong>The data is synthetic.</strong> Real network data can't be shared, so I hand-built three source files that mimic the problems I see at work. Every record tests a specific edge case, and an answer key records which site each one truly belongs to, so match quality can be scored instead of eyeballed.</p>
       </div>
 
       <div class="kpis">
         <div class="kpi"><b>3</b><span>source systems</span></div>
         <div class="kpi"><b>78</b><span>source records</span></div>
-        <div class="kpi"><b>24</b><span>real sites</span></div>
+        <div class="kpi"><b>24</b><span>sites in the answer key</span></div>
         <div class="kpi"><b>0</b><span>shared keys</span></div>
       </div>
 
       <div class="matcher" id="matcher">
         <div class="m-bar">
           <div>
-            <p class="label">Try it: 9 real records from the dataset</p>
+            <p class="label">Try it: 9 records from the synthetic dataset</p>
           </div>
           <div class="seg" role="group" aria-label="Matching approach">
             <button type="button" data-mode="raw" aria-pressed="true">Raw sources</button>
@@ -380,8 +379,26 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
             <button type="button" data-mode="evidence" aria-pressed="false">Match on evidence</button>
           </div>
         </div>
-        <p class="m-status" id="mStatus" aria-live="polite"></p>
-        <div class="lanes" id="lanes"></div>
+        <p class="m-status" id="mStatus" aria-live="polite">Three sources, nine records, no shared ID. How many towers are there?</p>
+        <div class="lanes" id="lanes"><div class="lane "><div class="lane-h"><b>Network inventory</b><small>3 records</small></div><div class="rec" data-id="NY-BRONX-017" style="--c:var(--src1)">
+    <span class="id">NY-BRONX-017</span><span class="nm">BRONX GRAND CONCOURSE</span><span class="ad">1250 Grand Concourse · 10456</span>
+    </div><div class="rec" data-id="NY-BX-0017" style="--c:var(--src1)">
+    <span class="id">NY-BX-0017</span><span class="nm">Bronx - Grand Concourse (legacy)</span><span class="ad">1250 GRAND CONCOURSE · 10456-2201</span>
+    </div><div class="rec" data-id="NY-BRONX-018" style="--c:var(--src1)">
+    <span class="id">NY-BRONX-018</span><span class="nm">Grand Concourse South</span><span class="ad">1100 Grand Concourse · 10456</span>
+    </div></div><div class="lane "><div class="lane-h"><b>RF planning</b><small>2 records</small></div><div class="rec" data-id="RF-10017" style="--c:var(--src2)">
+    <span class="id">RF-10017</span><span class="nm">Bronx Grand Concourse</span><span class="ad">40.83472, -73.91648</span>
+    </div><div class="rec" data-id="RF-10018" style="--c:var(--src2)">
+    <span class="id">RF-10018</span><span class="nm">Grand Concourse &amp; E 167th</span><span class="ad">40.82991, -73.91958</span>
+    </div></div><div class="lane "><div class="lane-h"><b>Field operations</b><small>4 records</small></div><div class="rec" data-id="WO-55001" style="--c:var(--src3)">
+    <span class="id">WO-55001</span><span class="nm">Bx Grand Concourse Site</span><span class="ad">1250 Grand Concourse, Bronx, NY 10456</span>
+    </div><div class="rec" data-id="WO-55002" style="--c:var(--src3)">
+    <span class="id">WO-55002</span><span class="nm">GRAND CONCOURSE - BRONX</span><span class="ad">1250 GRAND CONCRS BX NY 10456</span>
+    </div><div class="rec" data-id="WO-55003" style="--c:var(--src3)">
+    <span class="id">WO-55003</span><span class="nm">Grand Concourse S.</span><span class="ad">1100 Grand Concourse Bronx NY 10456</span>
+    </div><div class="rec" data-id="WO-55028" style="--c:var(--src3)">
+    <span class="id">WO-55028</span><span class="nm">Concourse</span><span class="ad">Grand Concourse, Bronx NY</span>
+    </div></div></div>
         <div class="legend">
           <span><i style="background:var(--src1)"></i>Network inventory (CSV)</span>
           <span><i style="background:var(--src2)"></i>RF planning (nested JSON)</span>
@@ -407,7 +424,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
         <div>
           <p class="label">Decisions so far</p>
           <ul>
-            <li><strong>Hand-built test data with an answer key.</strong> Every record tests a specific edge case, so match quality can be measured against ground truth instead of eyeballed.</li>
+            <li><strong>Synthetic data with an answer key.</strong> Because the true site for every record is known, precision and recall can be measured, not guessed.</li>
             <li><strong>Ambiguity goes to review.</strong> A work order with no house number could belong to two towers. The pipeline flags it instead of guessing.</li>
             <li><strong>Conflicts follow explicit survivorship rules.</strong> When field ops reports an equipment swap newer than inventory, the newer, more specific source wins.</li>
           </ul>
@@ -431,7 +448,105 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
       <button class="chip" type="button" data-f="ai" aria-pressed="false">ML &amp; AI</button>
     </div>
 
-    <div class="grid" id="grid"></div>
+    <div class="grid" id="grid">
+  <article class="card" data-f="streaming dbt">
+    <div class="card-top"><h3>Market Pulse</h3><span class="tag">Streaming · GCP</span></div>
+    <p class="sum">A real-time pipeline for a simulated stock brokerage. Trades are captured from Postgres with change data capture, streamed through Kafka with live market prices, landed as Iceberg tables, and modeled into portfolio analytics.</p>
+    <div class="numbers"><span>Trade every 3 s</span><span>Prices every 60 s</span><span>At-least-once delivery</span></div>
+    <div class="tools"><span>Postgres</span><span>Debezium</span><span>Kafka</span><span>Iceberg</span><span>GCS</span><span>BigQuery</span><span>dbt</span><span>Dagster</span><span>Terraform</span></div>
+    <details>
+      <summary>Architecture &amp; decisions</summary>
+      <div class="deep">
+        <div class="flow"><span>Postgres WAL</span><em>→</em><span>Debezium CDC</span><em>→</em><span>Kafka</span><em>→</em><span>Micro-batch writer</span><em>→</em><span>Iceberg (bronze)</span><em>→</em><span>dbt silver/gold</span><em>→</em><span>BigQuery</span></div>
+        <ul><li><b>CDC instead of app-published events.</b> Debezium reads the write-ahead log, so the stream can never drift from the database.</li><li><b>Offsets committed only after a successful write.</b> A crash never loses data; duplicates are removed downstream.</li><li><b>Lineage on every row.</b> Topic, partition, offset and CDC operation travel with the data for debugging.</li></ul>
+      </div>
+    </details>
+    <div class="links"><a href="https://github.com/devanshi4/market-pulse" target="_blank" rel="noopener">View code →</a></div>
+  </article>
+  <article class="card" data-f="aws dbt">
+    <div class="card-top"><h3>Weather Data Platform</h3><span class="tag">Batch ELT · AWS</span></div>
+    <p class="sum">A scheduled Lambda pulls hourly weather for several cities into S3. Airflow loads it into Snowflake, and dbt turns it into a tested star schema.</p>
+    <div class="numbers"><span>Idempotent at every layer</span><span>Incremental fact model</span><span>Tests between layers</span></div>
+    <div class="tools"><span>Lambda</span><span>EventBridge</span><span>S3</span><span>Snowflake</span><span>dbt</span><span>Airflow</span><span>Docker</span></div>
+    <details>
+      <summary>Architecture &amp; decisions</summary>
+      <div class="deep">
+        <div class="flow"><span>Open-Meteo API</span><em>→</em><span>Lambda (daily)</span><em>→</em><span>S3 raw JSON</span><em>→</em><span>COPY INTO</span><em>→</em><span>Snowflake RAW</span><em>→</em><span>dbt star schema</span></div>
+        <ul><li><b>Re-running never duplicates.</b> Per-date S3 keys, COPY INTO file tracking and a QUALIFY dedupe all make retries safe.</li><li><b>Incremental processing.</b> The fact table merges only rows past the watermark, so cost stays flat as history grows.</li><li><b>Raw kept immutable.</b> The whole warehouse can be rebuilt from S3 if a transformation bug is found.</li></ul>
+      </div>
+    </details>
+    <div class="links"><a href="https://github.com/devanshi4/weather-data-platform" target="_blank" rel="noopener">View code →</a></div>
+  </article>
+  <article class="card" data-f="aws streaming spark">
+    <div class="card-top"><h3>E-commerce Lakehouse</h3><span class="tag">Streaming + batch · AWS</span></div>
+    <p class="sum">Clickstream events stream in through Kinesis while daily orders arrive in batch. PySpark moves both through bronze, silver and gold layers on S3, queryable in Athena.</p>
+    <div class="numbers"><span>5 events/s streamed</span><span>200 orders/day batch</span><span>5 gold tables</span></div>
+    <div class="tools"><span>Kinesis</span><span>Lambda</span><span>S3</span><span>PySpark</span><span>Glue</span><span>Athena</span><span>Airflow</span><span>IAM</span></div>
+    <details>
+      <summary>Architecture &amp; decisions</summary>
+      <div class="deep">
+        <div class="flow"><span>Kinesis</span><em>→</em><span>Lambda</span><em>→</em><span>S3 bronze</span><em>→</em><span>PySpark silver</span><em>→</em><span>PySpark gold</span><em>→</em><span>Glue Catalog</span><em>→</em><span>Athena</span></div>
+        <ul><li><b>Both ingestion patterns in one platform.</b> Event-driven Lambda for streaming, a scheduled Airflow DAG for batch.</li><li><b>Hive-style date partitions</b> keep Athena scans, and cost, small.</li><li><b>Least-privilege IAM</b> with separate roles for Lambda and Glue.</li></ul>
+      </div>
+    </details>
+    <div class="links"><a href="https://github.com/devanshi4/Ecommerce-Project" target="_blank" rel="noopener">View code →</a></div>
+  </article>
+  <article class="card" data-f="spark">
+    <div class="card-top"><h3>Spark Performance Lab</h3><span class="tag">Spark tuning</span></div>
+    <p class="sum">A lab for finding and fixing Spark performance problems with the real Spark UI on a local multi-executor cluster. Every number comes from an actual run.</p>
+    <div class="numbers"><span>Real Spark UI, no screenshots</span><span>Before vs. after jobs</span></div>
+    <div class="tools"><span>PySpark 4.0</span><span>Spark UI</span><span>History Server</span><span>Python</span></div>
+    <details>
+      <summary>Architecture &amp; decisions</summary>
+      <div class="deep">
+        <div class="flow"><span>Skewed join (before)</span><em>→</em><span>Investigate in Spark UI</span><em>→</em><span>AQE skew join</span><em>→</em><span>Salted join</span><em>→</em><span>Compare runs</span></div>
+        <ul><li><b>Experiment 1, data skew,</b> compares the skewed join with an AQE skew join and a salted join.</li><li><b>Planned next:</b> memory spill, partition sizing, join strategies, and out-of-memory failures.</li><li><b>A finding so far:</b> removing skew or spill doesn't always reduce total runtime, so measure, don't assume.</li></ul>
+      </div>
+    </details>
+    <div class="links"><a href="#contact">Code available on request →</a></div>
+  </article>
+  <article class="card" data-f="dbt">
+    <div class="card-top"><h3>Yelp Reviews Analytics</h3><span class="tag">Analytics engineering</span></div>
+    <p class="sum">A dbt project over 2,000+ Yelp reviews, layered into staging, intermediate and mart models with tests and documented lineage.</p>
+    <div class="numbers"><span>2,000+ reviews</span><span>3 mart models</span><span>Lineage graph</span></div>
+    <div class="tools"><span>Python</span><span>PostgreSQL</span><span>dbt</span><span>Hugging Face</span></div>
+    <details>
+      <summary>Architecture &amp; decisions</summary>
+      <div class="deep">
+        <div class="flow"><span>Hugging Face dataset</span><em>→</em><span>Python loader</span><em>→</em><span>Postgres raw</span><em>→</em><span>dbt staging</span><em>→</em><span>dbt intermediate</span><em>→</em><span>dbt marts</span></div>
+        <ul><li><b>Layered models</b> keep cleaning, business logic and reporting separate and testable.</li><li><b>Scores built in SQL:</b> a product health score and reviewer-credibility indicators.</li></ul>
+      </div>
+    </details>
+    <div class="links"><a href="https://github.com/devanshi4/dbt-yelp-analytics-pipeline" target="_blank" rel="noopener">View code →</a></div>
+  </article>
+  <article class="card" data-f="ai">
+    <div class="card-top"><h3>Natural-Language SQL Assistant</h3><span class="tag">GenAI</span></div>
+    <p class="sum">Ask a question in plain English and get an answer from a live PostgreSQL database. The app writes the SQL, runs it, and summarizes the result.</p>
+    <div class="numbers"><span>~80% faster ad-hoc answers</span><span>5-table joins</span></div>
+    <div class="tools"><span>LangChain</span><span>OpenAI</span><span>PostgreSQL</span><span>Streamlit</span></div>
+    <details>
+      <summary>Architecture &amp; decisions</summary>
+      <div class="deep">
+        <div class="flow"><span>Question</span><em>→</em><span>Schema lookup</span><em>→</em><span>SQL generation</span><em>→</em><span>Run on Postgres</span><em>→</em><span>Plain-English answer</span></div>
+        <ul><li><b>Self-correcting.</b> When generated SQL fails, the database error goes back to the model and it retries.</li><li><b>Schema-aware prompts</b> let it handle joins across 15 tables.</li></ul>
+      </div>
+    </details>
+    <div class="links"><a href="https://github.com/devanshi4/sql-ai-assistant" target="_blank" rel="noopener">View code →</a></div>
+  </article>
+  <article class="card" data-f="ai">
+    <div class="card-top"><h3>Customer Churn Prediction</h3><span class="tag">Machine learning</span></div>
+    <p class="sum">An XGBoost model that flags telecom customers likely to cancel, with SHAP explanations so support teams know why each customer is at risk.</p>
+    <div class="numbers"><span>7,000+ customers</span><span>~79% accuracy</span></div>
+    <div class="tools"><span>Python</span><span>XGBoost</span><span>SHAP</span><span>Streamlit</span></div>
+    <details>
+      <summary>Architecture &amp; decisions</summary>
+      <div class="deep">
+        <div class="flow"><span>Raw customer data</span><em>→</em><span>Clean + encode</span><em>→</em><span>XGBoost</span><em>→</em><span>SHAP explanations</span><em>→</em><span>Streamlit app</span></div>
+        <ul><li><b>Explainable over black-box.</b> SHAP showed month-to-month contracts as the top churn driver.</li><li><b>What-if scenarios.</b> Managers can change a customer's plan and see the risk update.</li></ul>
+      </div>
+    </details>
+    <div class="links"><a href="https://github.com/devanshi4/Churn-Prediction" target="_blank" rel="noopener">View code →</a></div>
+  </article></div>
   </section>
 
   <section id="experience">
@@ -493,7 +608,10 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
           <h3>My food log</h3>
           <p class="sub">I'm a vegetarian and a picky eater, so every new restaurant is a careful experiment. Click a column to re-run the query.</p>
         </div>
-        <div class="sql" id="foodSql"></div>
+        <div class="sql" id="foodSql"><span class="k">SELECT</span> cuisine, go_to_order, rating
+<span class="k">FROM</span> food_log
+<span class="k">WHERE</span> vegetarian = <span class="o">TRUE</span>
+<span class="k">ORDER BY</span> rating <span class="k">DESC</span> <span class="k">NULLS LAST</span>;</div>
         <div class="tbl-wrap">
           <table class="food" id="foodTable">
             <thead><tr>
@@ -501,7 +619,28 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
               <th scope="col" data-k="order"><button type="button">go_to_order</button></th>
               <th scope="col" data-k="rating" aria-sort="descending"><button type="button">rating</button></th>
             </tr></thead>
-            <tbody></tbody>
+            <tbody><tr>
+    <td class="c">Indian</td>
+    <td>Paneer anything, dal, dosa<small>The baseline every other result is compared to</small></td>
+    <td class="r">10/10<span class="bar"><i style="width:100%"></i></span></td></tr><tr>
+    <td class="c">Homemade</td>
+    <td>White chocolate lemon cookies (baked by me)<small>Shipped to every office potluck. Zero rows left over.</small></td>
+    <td class="r">10/10<span class="bar"><i style="width:100%"></i></span></td></tr><tr>
+    <td class="c">Italian</td>
+    <td>Margherita pizza, pesto pasta<small>Has never failed a data-quality check</small></td>
+    <td class="r">9/10<span class="bar"><i style="width:90%"></i></span></td></tr><tr>
+    <td class="c">Mediterranean</td>
+    <td>Falafel, hummus, halloumi<small>Falafel: the most reliable vegetarian join key</small></td>
+    <td class="r">9/10<span class="bar"><i style="width:90%"></i></span></td></tr><tr>
+    <td class="c">Mexican</td>
+    <td>Bean burrito, guacamole<small>Guacamole is a core table, not an optional join</small></td>
+    <td class="r">9/10<span class="bar"><i style="width:90%"></i></span></td></tr><tr>
+    <td class="c">Thai</td>
+    <td>Green curry with tofu, pad thai<small>Spice level is a parameter. Tune carefully.</small></td>
+    <td class="r">8/10<span class="bar"><i style="width:80%"></i></span></td></tr><tr>
+    <td class="c">Ethiopian</td>
+    <td>Misir wot with injera<small>On the list. Pending first load.</small></td>
+    <td class="r"><span class="null">NULL</span></td></tr></tbody>
           </table>
         </div>
         <p class="foot">7 rows returned. Small dataset on purpose: still sampling.</p>
@@ -512,7 +651,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
           <h3>Learning chess</h3>
           <p class="sub">I'm very new and mostly losing on chess.com. This is the first pattern I learned. White to move: can you find checkmate in one?</p>
         </div>
-        <div class="board" id="board" role="grid" aria-label="Chess puzzle board"></div>
+        <div class="board" id="board" role="grid" aria-label="Chess puzzle board"><button type="button" class="sq d" data-sq="a8" aria-label="a8"><span class="co">8</span></button><button type="button" class="sq l" data-sq="b8" aria-label="b8"></button><button type="button" class="sq d" data-sq="c8" aria-label="c8"></button><button type="button" class="sq l" data-sq="d8" aria-label="d8"></button><button type="button" class="sq d" data-sq="e8" aria-label="e8"></button><button type="button" class="sq l" data-sq="f8" aria-label="f8"></button><button type="button" class="sq d" data-sq="g8" aria-label="g8 black king"><span class="">♚</span></button><button type="button" class="sq l" data-sq="h8" aria-label="h8"></button><button type="button" class="sq l" data-sq="a7" aria-label="a7"><span class="co">7</span></button><button type="button" class="sq d" data-sq="b7" aria-label="b7"></button><button type="button" class="sq l" data-sq="c7" aria-label="c7"></button><button type="button" class="sq d" data-sq="d7" aria-label="d7"></button><button type="button" class="sq l" data-sq="e7" aria-label="e7"></button><button type="button" class="sq d" data-sq="f7" aria-label="f7 black pawn"><span class="">♟</span></button><button type="button" class="sq l" data-sq="g7" aria-label="g7 black pawn"><span class="">♟</span></button><button type="button" class="sq d" data-sq="h7" aria-label="h7 black pawn"><span class="">♟</span></button><button type="button" class="sq d" data-sq="a6" aria-label="a6"><span class="co">6</span></button><button type="button" class="sq l" data-sq="b6" aria-label="b6"></button><button type="button" class="sq d" data-sq="c6" aria-label="c6"></button><button type="button" class="sq l" data-sq="d6" aria-label="d6"></button><button type="button" class="sq d" data-sq="e6" aria-label="e6"></button><button type="button" class="sq l" data-sq="f6" aria-label="f6"></button><button type="button" class="sq d" data-sq="g6" aria-label="g6"></button><button type="button" class="sq l" data-sq="h6" aria-label="h6"></button><button type="button" class="sq l" data-sq="a5" aria-label="a5"><span class="co">5</span></button><button type="button" class="sq d" data-sq="b5" aria-label="b5"></button><button type="button" class="sq l" data-sq="c5" aria-label="c5"></button><button type="button" class="sq d" data-sq="d5" aria-label="d5"></button><button type="button" class="sq l" data-sq="e5" aria-label="e5"></button><button type="button" class="sq d" data-sq="f5" aria-label="f5"></button><button type="button" class="sq l" data-sq="g5" aria-label="g5"></button><button type="button" class="sq d" data-sq="h5" aria-label="h5"></button><button type="button" class="sq d" data-sq="a4" aria-label="a4"><span class="co">4</span></button><button type="button" class="sq l" data-sq="b4" aria-label="b4"></button><button type="button" class="sq d" data-sq="c4" aria-label="c4"></button><button type="button" class="sq l" data-sq="d4" aria-label="d4"></button><button type="button" class="sq d" data-sq="e4" aria-label="e4"></button><button type="button" class="sq l" data-sq="f4" aria-label="f4"></button><button type="button" class="sq d" data-sq="g4" aria-label="g4"></button><button type="button" class="sq l" data-sq="h4" aria-label="h4"></button><button type="button" class="sq l" data-sq="a3" aria-label="a3"><span class="co">3</span></button><button type="button" class="sq d" data-sq="b3" aria-label="b3"></button><button type="button" class="sq l" data-sq="c3" aria-label="c3"></button><button type="button" class="sq d" data-sq="d3" aria-label="d3"></button><button type="button" class="sq l" data-sq="e3" aria-label="e3"></button><button type="button" class="sq d" data-sq="f3" aria-label="f3"></button><button type="button" class="sq l" data-sq="g3" aria-label="g3"></button><button type="button" class="sq d" data-sq="h3" aria-label="h3"></button><button type="button" class="sq d" data-sq="a2" aria-label="a2"><span class="co">2</span></button><button type="button" class="sq l" data-sq="b2" aria-label="b2"></button><button type="button" class="sq d" data-sq="c2" aria-label="c2"></button><button type="button" class="sq l" data-sq="d2" aria-label="d2"></button><button type="button" class="sq d" data-sq="e2" aria-label="e2"></button><button type="button" class="sq l" data-sq="f2" aria-label="f2 white pawn"><span class="wp">♟</span></button><button type="button" class="sq d" data-sq="g2" aria-label="g2 white pawn"><span class="wp">♟</span></button><button type="button" class="sq l" data-sq="h2" aria-label="h2 white pawn"><span class="wp">♟</span></button><button type="button" class="sq l" data-sq="a1" aria-label="a1 white rook"><span class="wp">♜</span><span class="co">1a</span></button><button type="button" class="sq d" data-sq="b1" aria-label="b1"><span class="co">b</span></button><button type="button" class="sq l" data-sq="c1" aria-label="c1"><span class="co">c</span></button><button type="button" class="sq d" data-sq="d1" aria-label="d1"><span class="co">d</span></button><button type="button" class="sq l" data-sq="e1" aria-label="e1"><span class="co">e</span></button><button type="button" class="sq d" data-sq="f1" aria-label="f1"><span class="co">f</span></button><button type="button" class="sq l" data-sq="g1" aria-label="g1 white king"><span class="wp">♚</span><span class="co">g</span></button><button type="button" class="sq d" data-sq="h1" aria-label="h1"><span class="co">h</span></button></div>
         <div class="chess-row">
           <p class="chess-msg" id="chessMsg" aria-live="polite">Click the square where the white rook should go.</p>
           <button class="linkbtn" type="button" id="chessReset">Reset</button>
@@ -525,7 +664,11 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
         <h3>What kind of data engineer are you?</h3>
         <p class="sub">Two questions, no wrong answers. Data engineering experience not required.</p>
       </div>
-      <div class="qs" id="quiz"></div>
+      <div class="qs" id="quiz"><div class="q"><h4>How do you cut your sandwich?</h4>
+  <div class="opts" role="group" aria-label="How do you cut your sandwich?"><button type="button" class="qopt" aria-pressed="false" data-q="0" data-a="0"><span class="e" aria-hidden="true">◸</span>Diagonally</button><button type="button" class="qopt" aria-pressed="false" data-q="0" data-a="1"><span class="e" aria-hidden="true">▯</span>Straight down the middle</button><button type="button" class="qopt" aria-pressed="false" data-q="0" data-a="2"><span class="e" aria-hidden="true">▦</span>Into little squares</button><button type="button" class="qopt" aria-pressed="false" data-q="0" data-a="3"><span class="e" aria-hidden="true">🥪</span>I don't cut it</button></div>
+  <p class="trait" id="trait0"></p></div><div class="q"><h4>At a new restaurant, you…</h4>
+  <div class="opts" role="group" aria-label="At a new restaurant, you…"><button type="button" class="qopt" aria-pressed="false" data-q="1" data-a="0"><span class="e" aria-hidden="true">📖</span>Read the menu beforehand and practice my order</button><button type="button" class="qopt" aria-pressed="false" data-q="1" data-a="1"><span class="e" aria-hidden="true">🙋</span>Ask the server to pick</button><button type="button" class="qopt" aria-pressed="false" data-q="1" data-a="2"><span class="e" aria-hidden="true">🔁</span>Stick to my regular favorite</button><button type="button" class="qopt" aria-pressed="false" data-q="1" data-a="3"><span class="e" aria-hidden="true">🍽️</span>Order two dishes and share</button></div>
+  <p class="trait" id="trait1"></p></div></div>
       <div class="result" id="quizResult" aria-live="polite">
         <span class="label">Your result</span>
         <p>Answer both questions to find out.</p>
@@ -849,5 +992,6 @@ try{
   console.log("%cYou opened DevTools, so you're my kind of person.\nNo framework here: one HTML file, hand-written CSS and JS, hosted on GitHub Pages.\nIf you'd build it differently, I'd love to hear how: devanshipandya44@gmail.com\n\nSELECT * FROM candidates WHERE checks_the_console = TRUE;\n-- 1 row returned 🍪","font:13px ui-monospace,monospace;line-height:1.5");
 }catch(e){}
 </script>
-</body>
-</html>
+
+
+</body></html>
