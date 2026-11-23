@@ -428,7 +428,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
             <li><strong>Ambiguity goes to review.</strong> A work order with no house number could belong to two towers. The pipeline flags it instead of guessing.</li>
             <li><strong>Conflicts follow explicit survivorship rules.</strong> When field ops reports an equipment swap newer than inventory, the newer, more specific source wins.</li>
           </ul>
-          <div class="links" style="margin-top:14px"><a href="https://github.com/devanshi4/telecom_aws" target="_blank" rel="noopener">View code →</a></div>
+          <div class="links" style="margin-top:14px"><a href="https://github.com/devanshi4/cell-site-entity-resolution" target="_blank" rel="noopener">View code →</a></div>
         </div>
       </div>
     </div>
@@ -475,7 +475,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
         <ul><li><b>Re-running never duplicates.</b> Per-date S3 keys, COPY INTO file tracking and a QUALIFY dedupe all make retries safe.</li><li><b>Incremental processing.</b> The fact table merges only rows past the watermark, so cost stays flat as history grows.</li><li><b>Raw kept immutable.</b> The whole warehouse can be rebuilt from S3 if a transformation bug is found.</li></ul>
       </div>
     </details>
-    <div class="links"><a href="https://github.com/devanshi4/weather-data-platform" target="_blank" rel="noopener">View code →</a></div>
+    <div class="links"><a href="https://github.com/devanshi4/weather-elt-snowflake" target="_blank" rel="noopener">View code →</a></div>
   </article>
   <article class="card" data-f="aws streaming spark">
     <div class="card-top"><h3>E-commerce Lakehouse</h3><span class="tag">Streaming + batch · AWS</span></div>
@@ -489,7 +489,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
         <ul><li><b>Both ingestion patterns in one platform.</b> Event-driven Lambda for streaming, a scheduled Airflow DAG for batch.</li><li><b>Hive-style date partitions</b> keep Athena scans, and cost, small.</li><li><b>Least-privilege IAM</b> with separate roles for Lambda and Glue.</li></ul>
       </div>
     </details>
-    <div class="links"><a href="https://github.com/devanshi4/Ecommerce-Project" target="_blank" rel="noopener">View code →</a></div>
+    <div class="links"><a href="https://github.com/devanshi4/ecommerce-lakehouse-aws" target="_blank" rel="noopener">View code →</a></div>
   </article>
   <article class="card" data-f="spark">
     <div class="card-top"><h3>Spark Performance Lab</h3><span class="tag">Spark tuning</span></div>
@@ -517,7 +517,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
         <ul><li><b>Layered models</b> keep cleaning, business logic and reporting separate and testable.</li><li><b>Scores built in SQL:</b> a product health score and reviewer-credibility indicators.</li></ul>
       </div>
     </details>
-    <div class="links"><a href="https://github.com/devanshi4/dbt-yelp-analytics-pipeline" target="_blank" rel="noopener">View code →</a></div>
+    <div class="links"><a href="https://github.com/devanshi4/yelp-reviews-dbt" target="_blank" rel="noopener">View code →</a></div>
   </article>
   <article class="card" data-f="ai">
     <div class="card-top"><h3>Natural-Language SQL Assistant</h3><span class="tag">GenAI</span></div>
@@ -531,7 +531,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
         <ul><li><b>Self-correcting.</b> When generated SQL fails, the database error goes back to the model and it retries.</li><li><b>Schema-aware prompts</b> let it handle joins across 15 tables.</li></ul>
       </div>
     </details>
-    <div class="links"><a href="https://github.com/devanshi4/sql-ai-assistant" target="_blank" rel="noopener">View code →</a></div>
+    <div class="links"><a href="https://github.com/devanshi4/text-to-sql-assistant" target="_blank" rel="noopener">View code →</a></div>
   </article>
   <article class="card" data-f="ai">
     <div class="card-top"><h3>Customer Churn Prediction</h3><span class="tag">Machine learning</span></div>
@@ -545,7 +545,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
         <ul><li><b>Explainable over black-box.</b> SHAP showed month-to-month contracts as the top churn driver.</li><li><b>What-if scenarios.</b> Managers can change a customer's plan and see the risk update.</li></ul>
       </div>
     </details>
-    <div class="links"><a href="https://github.com/devanshi4/Churn-Prediction" target="_blank" rel="noopener">View code →</a></div>
+    <div class="links"><a href="https://github.com/devanshi4/telecom-churn-prediction" target="_blank" rel="noopener">View code →</a></div>
   </article></div>
   </section>
 
@@ -785,7 +785,7 @@ const PROJECTS = [
       "<b>Incremental processing.</b> The fact table merges only rows past the watermark, so cost stays flat as history grows.",
       "<b>Raw kept immutable.</b> The whole warehouse can be rebuilt from S3 if a transformation bug is found."
     ],
-    repo:"weather-data-platform"
+    repo:"weather-elt-snowflake"
   },
   {
     name:"E-commerce Lakehouse", tag:"Streaming + batch · AWS", f:["aws","streaming","spark"],
@@ -798,7 +798,7 @@ const PROJECTS = [
       "<b>Hive-style date partitions</b> keep Athena scans, and cost, small.",
       "<b>Least-privilege IAM</b> with separate roles for Lambda and Glue."
     ],
-    repo:"Ecommerce-Project"
+    repo:"ecommerce-lakehouse-aws"
   },
   {
     name:"Spark Performance Lab", tag:"Spark tuning", f:["spark"],
@@ -811,7 +811,7 @@ const PROJECTS = [
       "<b>Planned next:</b> memory spill, partition sizing, join strategies, and out-of-memory failures.",
       "<b>A finding so far:</b> removing skew or spill doesn't always reduce total runtime, so measure, don't assume."
     ],
-    repo:"spark-perf-lab", private:true
+    repo:"spark-performance-lab", private:true
   },
   {
     name:"Yelp Reviews Analytics", tag:"Analytics engineering", f:["dbt"],
@@ -823,7 +823,7 @@ const PROJECTS = [
       "<b>Layered models</b> keep cleaning, business logic and reporting separate and testable.",
       "<b>Scores built in SQL:</b> a product health score and reviewer-credibility indicators."
     ],
-    repo:"dbt-yelp-analytics-pipeline"
+    repo:"yelp-reviews-dbt"
   },
   {
     name:"Natural-Language SQL Assistant", tag:"GenAI", f:["ai"],
@@ -835,7 +835,7 @@ const PROJECTS = [
       "<b>Self-correcting.</b> When generated SQL fails, the database error goes back to the model and it retries.",
       "<b>Schema-aware prompts</b> let it handle joins across 15 tables."
     ],
-    repo:"sql-ai-assistant"
+    repo:"text-to-sql-assistant"
   },
   {
     name:"Customer Churn Prediction", tag:"Machine learning", f:["ai"],
@@ -847,7 +847,7 @@ const PROJECTS = [
       "<b>Explainable over black-box.</b> SHAP showed month-to-month contracts as the top churn driver.",
       "<b>What-if scenarios.</b> Managers can change a customer's plan and see the risk update."
     ],
-    repo:"Churn-Prediction"
+    repo:"telecom-churn-prediction"
   }
 ];
 const grid = document.getElementById("grid");
