@@ -428,7 +428,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
             <li><strong>Ambiguity goes to review.</strong> A work order with no house number could belong to two towers. The pipeline flags it instead of guessing.</li>
             <li><strong>Conflicts follow explicit survivorship rules.</strong> When field ops reports an equipment swap newer than inventory, the newer, more specific source wins.</li>
           </ul>
-          <div class="links" style="margin-top:14px"><a href="#contact">Code available on request →</a></div>
+          <div class="links" style="margin-top:14px"><a href="https://github.com/devanshi4/telecom_aws" target="_blank" rel="noopener">View code →</a></div>
         </div>
       </div>
     </div>
@@ -453,7 +453,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
     <div class="card-top"><h3>Market Pulse</h3><span class="tag">Streaming · GCP</span></div>
     <p class="sum">A real-time pipeline for a simulated stock brokerage. Trades are captured from Postgres with change data capture, streamed through Kafka with live market prices, landed as Iceberg tables, and modeled into portfolio analytics.</p>
     <div class="numbers"><span>Trade every 3 s</span><span>Prices every 60 s</span><span>At-least-once delivery</span></div>
-    <div class="tools"><span>Postgres</span><span>Debezium</span><span>Kafka</span><span>Iceberg</span><span>GCS</span><span>BigQuery</span><span>dbt</span><span>Dagster</span><span>Terraform</span></div>
+    <div class="tools"><span>Postgres</span><span>Debezium</span><span>Kafka</span><span>Iceberg</span><span>GCS</span><span>BigQuery</span><span>dbt</span><span>Dagster</span><span>Docker</span></div>
     <details>
       <summary>Architecture &amp; decisions</summary>
       <div class="deep">
@@ -522,7 +522,7 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
   <article class="card" data-f="ai">
     <div class="card-top"><h3>Natural-Language SQL Assistant</h3><span class="tag">GenAI</span></div>
     <p class="sum">Ask a question in plain English and get an answer from a live PostgreSQL database. The app writes the SQL, runs it, and summarizes the result.</p>
-    <div class="numbers"><span>~80% faster ad-hoc answers</span><span>5-table joins</span></div>
+    <div class="numbers"><span>Self-correcting SQL</span><span>5-table joins</span></div>
     <div class="tools"><span>LangChain</span><span>OpenAI</span><span>PostgreSQL</span><span>Streamlit</span></div>
     <details>
       <summary>Architecture &amp; decisions</summary>
@@ -765,7 +765,7 @@ const PROJECTS = [
     name:"Market Pulse", tag:"Streaming · GCP", f:["streaming","dbt"],
     sum:"A real-time pipeline for a simulated stock brokerage. Trades are captured from Postgres with change data capture, streamed through Kafka with live market prices, landed as Iceberg tables, and modeled into portfolio analytics.",
     nums:["Trade every 3 s","Prices every 60 s","At-least-once delivery"],
-    tools:["Postgres","Debezium","Kafka","Iceberg","GCS","BigQuery","dbt","Dagster","Terraform"],
+    tools:["Postgres","Debezium","Kafka","Iceberg","GCS","BigQuery","dbt","Dagster","Docker"],
     flow:["Postgres WAL","Debezium CDC","Kafka","Micro-batch writer","Iceberg (bronze)","dbt silver/gold","BigQuery"],
     why:[
       "<b>CDC instead of app-published events.</b> Debezium reads the write-ahead log, so the stream can never drift from the database.",
@@ -828,7 +828,7 @@ const PROJECTS = [
   {
     name:"Natural-Language SQL Assistant", tag:"GenAI", f:["ai"],
     sum:"Ask a question in plain English and get an answer from a live PostgreSQL database. The app writes the SQL, runs it, and summarizes the result.",
-    nums:["~80% faster ad-hoc answers","5-table joins"],
+    nums:["Self-correcting SQL","5-table joins"],
     tools:["LangChain","OpenAI","PostgreSQL","Streamlit"],
     flow:["Question","Schema lookup","SQL generation","Run on Postgres","Plain-English answer"],
     why:[
