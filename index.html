@@ -493,14 +493,14 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
   </article>
   <article class="card" data-f="spark">
     <div class="card-top"><h3>Spark Performance Lab</h3><span class="tag">Spark tuning</span></div>
-    <p class="sum">A lab for finding and fixing Spark performance problems with the real Spark UI on a local multi-executor cluster. Every number comes from an actual run.</p>
-    <div class="numbers"><span>Real Spark UI, no screenshots</span><span>Before vs. after jobs</span></div>
+    <p class="sum">A lab where I reproduce Spark performance problems on a real multi-executor cluster, diagnose them in the Spark UI, and measure each fix. First up: a join where one merchant owns 21 of 30 million rows.</p>
+    <div class="numbers"><span>Job 23 s → 17 s</span><span>Join stage 12.7 s → 2.4 s</span><span>Disk spill 274 MB → 0</span></div>
     <div class="tools"><span>PySpark 4.0</span><span>Spark UI</span><span>History Server</span><span>Python</span></div>
     <details>
       <summary>Architecture &amp; decisions</summary>
       <div class="deep">
-        <div class="flow"><span>Skewed join (before)</span><em>→</em><span>Investigate in Spark UI</span><em>→</em><span>AQE skew join</span><em>→</em><span>Salted join</span><em>→</em><span>Compare runs</span></div>
-        <ul><li><b>Experiment 1, data skew,</b> compares the skewed join with an AQE skew join and a salted join.</li><li><b>Planned next:</b> memory spill, partition sizing, join strategies, and out-of-memory failures.</li><li><b>A finding so far:</b> removing skew or spill doesn't always reduce total runtime, so measure, don't assume.</li></ul>
+        <div class="flow"><span>Skewed join (baseline)</span><em>→</em><span>Investigate in Spark UI</span><em>→</em><span>AQE skew join</span><em>→</em><span>Salted join</span><em>→</em><span>Aggregate before join</span><em>→</em><span>Verify + compare</span></div>
+        <ul><li><b>The skew was visible in one task:</b> it read 310 MB and ran 12.7 s while the median task took half a second.</li><li><b>Changing the query beat tuning Spark:</b> aggregating before the join removed all spill and made the join stage 5× faster; AQE alone cut runtime 26%.</li><li><b>Balanced isn't the same as fast:</b> salting evened out the tasks but added as much work as it saved, so the runtime didn't improve.</li><li><b>Correctness first:</b> every fix returns exactly the same 7,200-row report as the baseline.</li></ul>
       </div>
     </details>
     <div class="links"><a href="#contact">Code available on request →</a></div>
@@ -536,13 +536,13 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
   <article class="card" data-f="ai">
     <div class="card-top"><h3>Customer Churn Prediction</h3><span class="tag">Machine learning</span></div>
     <p class="sum">An XGBoost model that flags telecom customers likely to cancel, with SHAP explanations so support teams know why each customer is at risk.</p>
-    <div class="numbers"><span>7,000+ customers</span><span>~79% accuracy</span></div>
+    <div class="numbers"><span>7,043 customers</span><span>ROC-AUC 0.82</span><span>60% precision on churners</span></div>
     <div class="tools"><span>Python</span><span>XGBoost</span><span>SHAP</span><span>Streamlit</span></div>
     <details>
       <summary>Architecture &amp; decisions</summary>
       <div class="deep">
         <div class="flow"><span>Raw customer data</span><em>→</em><span>Clean + encode</span><em>→</em><span>XGBoost</span><em>→</em><span>SHAP explanations</span><em>→</em><span>Streamlit app</span></div>
-        <ul><li><b>Explainable over black-box.</b> SHAP showed month-to-month contracts as the top churn driver.</li><li><b>What-if scenarios.</b> Managers can change a customer's plan and see the risk update.</li></ul>
+        <ul><li><b>Explainable over black-box.</b> SHAP shows contract type, tenure and monthly charges as the top churn drivers; month-to-month customers leave most.</li><li><b>Measured honestly.</b> Only 26.5% of customers churn, so I report ROC-AUC, precision and recall against an always-stays baseline, not just accuracy.</li><li><b>What-if scenarios.</b> Managers can change a customer's plan and see the risk update.</li></ul>
       </div>
     </details>
     <div class="links"><a href="https://github.com/devanshi4/telecom-churn-prediction" target="_blank" rel="noopener">View code →</a></div>
@@ -802,14 +802,15 @@ const PROJECTS = [
   },
   {
     name:"Spark Performance Lab", tag:"Spark tuning", f:["spark"],
-    sum:"A lab for finding and fixing Spark performance problems with the real Spark UI on a local multi-executor cluster. Every number comes from an actual run.",
-    nums:["Real Spark UI, no screenshots","Before vs. after jobs"],
+    sum:"A lab where I reproduce Spark performance problems on a real multi-executor cluster, diagnose them in the Spark UI, and measure each fix. First up: a join where one merchant owns 21 of 30 million rows.",
+    nums:["Job 23 s → 17 s","Join stage 12.7 s → 2.4 s","Disk spill 274 MB → 0"],
     tools:["PySpark 4.0","Spark UI","History Server","Python"],
-    flow:["Skewed join (before)","Investigate in Spark UI","AQE skew join","Salted join","Compare runs"],
+    flow:["Skewed join (baseline)","Investigate in Spark UI","AQE skew join","Salted join","Aggregate before join","Verify + compare"],
     why:[
-      "<b>Experiment 1, data skew,</b> compares the skewed join with an AQE skew join and a salted join.",
-      "<b>Planned next:</b> memory spill, partition sizing, join strategies, and out-of-memory failures.",
-      "<b>A finding so far:</b> removing skew or spill doesn't always reduce total runtime, so measure, don't assume."
+      "<b>The skew was visible in one task:</b> it read 310 MB and ran 12.7 s while the median task took half a second.",
+      "<b>Changing the query beat tuning Spark:</b> aggregating before the join removed all spill and made the join stage 5× faster; AQE alone cut runtime 26%.",
+      "<b>Balanced isn't the same as fast:</b> salting evened out the tasks but added as much work as it saved, so the runtime didn't improve.",
+      "<b>Correctness first:</b> every fix returns exactly the same 7,200-row report as the baseline."
     ],
     repo:"spark-performance-lab", private:true
   },
@@ -840,11 +841,12 @@ const PROJECTS = [
   {
     name:"Customer Churn Prediction", tag:"Machine learning", f:["ai"],
     sum:"An XGBoost model that flags telecom customers likely to cancel, with SHAP explanations so support teams know why each customer is at risk.",
-    nums:["7,000+ customers","~79% accuracy"],
+    nums:["7,043 customers","ROC-AUC 0.82","60% precision on churners"],
     tools:["Python","XGBoost","SHAP","Streamlit"],
     flow:["Raw customer data","Clean + encode","XGBoost","SHAP explanations","Streamlit app"],
     why:[
-      "<b>Explainable over black-box.</b> SHAP showed month-to-month contracts as the top churn driver.",
+      "<b>Explainable over black-box.</b> SHAP shows contract type, tenure and monthly charges as the top churn drivers; month-to-month customers leave most.",
+      "<b>Measured honestly.</b> Only 26.5% of customers churn, so I report ROC-AUC, precision and recall against an always-stays baseline, not just accuracy.",
       "<b>What-if scenarios.</b> Managers can change a customer's plan and see the risk update."
     ],
     repo:"telecom-churn-prediction"
