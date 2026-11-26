@@ -1,243 +1,286 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Devanshi Pandya</title>
-<meta name="description" content="Devanshi Pandya, data engineer. Snowflake, dbt, Spark, Iceberg and AWS pipelines, with project write-ups and an interactive entity-resolution demo.">
+<title>Devanshi Pandya · Data Engineer</title>
+<meta name="description" content="Devanshi Pandya, data engineer in New York. Pipelines, dbt models and data-quality checks on Snowflake, Spark, Kafka and AWS, with case studies and an interactive entity-resolution demo.">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Devanshi Pandya · Data Engineer">
-<meta property="og:description" content="Pipelines, warehouses and data quality: projects, architecture and trade-offs.">
+<meta property="og:description" content="Pipelines, dbt models and data-quality checks that catch wrong data before anyone reports on it. Case studies with measured results.">
 <meta property="og:image" content="https://devanshi4.github.io/photo.jpg">
 <meta property="og:url" content="https://devanshi4.github.io/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%232f47d6'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='28' text-anchor='middle' fill='white'%3EDP%3C/text%3E%3C/svg%3E">
-<style>
-:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-body{margin:0}
-img{max-width:100%}
-[hidden]{display:none!important}
-</style>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://devanshi4.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f47d6'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-weight='700' font-size='30' text-anchor='middle' fill='white'%3EDP%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Devanshi Pandya","jobTitle":"Data Engineer","worksFor":{"@type":"Organization","name":"Cloudify Technologies"},"address":{"@type":"PostalAddress","addressLocality":"New York","addressRegion":"NY"},"alumniOf":"University of Southern California","url":"https://devanshi4.github.io/","sameAs":["https://www.linkedin.com/in/devanshi4/","https://github.com/devanshi4"]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: a single reading column that widens for project grids; sections read top-down like a pipeline (source -> work -> output). */
+/* Layout: a technical report. Name, role and measured results first; numbered sections with a sticky margin label on desktop;
+   case studies read Problem -> Approach -> Result, each topped by its real data flow. */
 :root{
-  --bg:#f5f6f9; --surface:#ffffff; --ink:#151821; --muted:#5b6172; --line:#dde1ea;
-  --accent:#2f47d6; --accent-soft:#e6e9fb; --warm:#b86a0c; --warm-soft:#fbefdc;
-  --ok:#1b7f4b; --ok-soft:#e0f3e8; --bad:#b4262f; --bad-soft:#fbe3e4;
+  --bg:#fbfbfc; --surface:#ffffff; --ink:#15171d; --muted:#5c6170; --line:#e0e3ea; --fig:#f0f2f7;
+  --accent:#2f47d6; --accent-soft:#e7eafb; --flag:#a8670f; --flag-soft:#f8ecd8;
+  --good:#1b7f4b; --good-soft:#e0f3e8; --bad:#b4262f; --bad-soft:#fbe3e4;
   --src1:#2f47d6; --src2:#7a3fc4; --src3:#0f8a85;
-  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --display:"Source Serif 4", Georgia, "Times New Roman", serif;
   --body:"Instrument Sans", "Segoe UI", system-ui, sans-serif;
   --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-  --radius:12px;
+  --gutter:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0f1218; --surface:#171b24; --ink:#e8eaf0; --muted:#9aa1b2; --line:#2a303d;
-  --accent:#8fa0ff; --accent-soft:#232a4a; --warm:#f0b25c; --warm-soft:#3a2c17;
-  --ok:#5fd39a; --ok-soft:#173327; --bad:#ff8a90; --bad-soft:#3d1c20;
-  --src1:#8fa0ff; --src2:#c39bff; --src3:#4fd1c9; color-scheme:dark}}
+  --bg:#121419; --surface:#181b22; --ink:#e8e9ee; --muted:#9a9fac; --line:#2a2e38; --fig:#1c2029;
+  --accent:#93a3ff; --accent-soft:#222a4d; --flag:#f0b25c; --flag-soft:#3a2c17;
+  --good:#5fd39a; --good-soft:#173327; --bad:#ff8a90; --bad-soft:#3d1c20;
+  --src1:#93a3ff; --src2:#c39bff; --src3:#4fd1c9; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0f1218; --surface:#171b24; --ink:#e8eaf0; --muted:#9aa1b2; --line:#2a303d;
-  --accent:#8fa0ff; --accent-soft:#232a4a; --warm:#f0b25c; --warm-soft:#3a2c17;
-  --ok:#5fd39a; --ok-soft:#173327; --bad:#ff8a90; --bad-soft:#3d1c20;
-  --src1:#8fa0ff; --src2:#c39bff; --src3:#4fd1c9; color-scheme:dark}
+  --bg:#121419; --surface:#181b22; --ink:#e8e9ee; --muted:#9a9fac; --line:#2a2e38; --fig:#1c2029;
+  --accent:#93a3ff; --accent-soft:#222a4d; --flag:#f0b25c; --flag-soft:#3a2c17;
+  --good:#5fd39a; --good-soft:#173327; --bad:#ff8a90; --bad-soft:#3d1c20;
+  --src1:#93a3ff; --src2:#c39bff; --src3:#4fd1c9; color-scheme:dark}
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
-  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+img{max-width:100%;display:block}
+[hidden]{display:none!important}
 a{color:var(--accent)}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
-.wrap{max-width:1080px;margin:0 auto}
-h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
-h2{font-size:clamp(1.7rem,3.5vw,2.3rem);font-weight:700;letter-spacing:-.01em}
-h3{font-size:1.25rem;font-weight:700}
 p{margin:0}
-.label{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
 .mono{font-family:var(--mono)}
+.label{font:500 .74rem var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.skip{position:absolute;left:-9999px;top:8px;background:var(--ink);color:var(--bg);padding:8px 12px;border-radius:6px;z-index:20}
+.skip:focus{left:16px}
 
-/* nav */
-nav{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:color-mix(in srgb, var(--bg) 88%, transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 calc(-1 * max(16px, env(safe-area-inset-left, 0px)))}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
-.logo{font-family:var(--display);font-weight:800;font-size:1.1rem;color:var(--ink);text-decoration:none}
-.navlinks{display:flex;gap:20px;flex-wrap:wrap}
-.navlinks a{color:var(--muted);text-decoration:none;font-size:.95rem}
-.navlinks a:hover{color:var(--ink)}
-@media (max-width:560px){.navlinks a.opt{display:none}}
+/* ---------- nav ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb, var(--bg) 92%, transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:22px;padding-block:12px}
+.logo{font:600 1.1rem var(--display);color:var(--ink);text-decoration:none;margin-right:auto;letter-spacing:-.01em;white-space:nowrap}
+.links{display:flex;gap:20px;font-size:.92rem;overflow-x:auto;scrollbar-width:none}
+.links::-webkit-scrollbar{display:none}
+.links a{text-decoration:none;color:var(--muted);white-space:nowrap}
+.links a:hover{color:var(--ink)}
+.links a b{font:500 .72rem var(--mono);color:var(--accent);margin-right:4px}
+.resume{font:600 .86rem var(--body);background:var(--accent);color:var(--bg);border-radius:999px;padding:8px 14px;white-space:nowrap;text-decoration:none}
+@media (max-width:760px){
+  .nav .wrap{flex-wrap:wrap;gap:6px 16px;padding-block:10px}
+  .links{order:3;width:100%;gap:18px;padding-bottom:2px}
+}
 
-section{padding-block:72px;border-bottom:1px solid var(--line)}
-section:last-of-type{border-bottom:0}
-.sec-head{display:grid;gap:10px;margin-bottom:32px;max-width:65ch}
-.sec-head p{color:var(--muted)}
-
-/* hero */
-.hero{padding-block:64px 72px}
-.hero-grid{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center}
-@media (max-width:720px){.hero-grid{grid-template-columns:1fr;gap:24px}}
-.photo{width:180px;height:180px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;position:relative;flex:none}
-.photo span{font-family:var(--display);font-weight:800;font-size:3.6rem;color:var(--accent)}
-.photo img{width:100%;height:100%;border-radius:50%;object-fit:cover}
-.photo::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:1.5px dashed var(--line)}
-@media (max-width:720px){.photo{width:128px;height:128px}.photo span{font-size:2.6rem}}
-.hello{font-family:var(--mono);color:var(--accent);font-size:.95rem;margin-bottom:10px}
-.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;letter-spacing:-.02em}
-.hero .role{font-size:clamp(1.1rem,2.2vw,1.35rem);color:var(--muted);margin-top:14px;max-width:58ch}
-.hero .role strong{color:var(--ink);font-weight:600}
-.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:600;font-size:.95rem;text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--surface);cursor:pointer;font-family:var(--body)}
+/* ---------- hero ---------- */
+.hero{padding-block:64px 56px;display:grid;gap:28px}
+.who{display:flex;align-items:center;gap:14px}
+.who img{width:68px;height:68px;border-radius:8px;object-fit:cover;flex:none}
+.who h1{font:600 1.2rem/1.25 var(--display);letter-spacing:-.01em}
+.who p{font-size:.92rem;color:var(--muted)}
+.who .open{display:inline-flex;align-items:center;gap:6px;color:var(--good);font-weight:500}
+.who .open::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.thesis{font:600 clamp(2.25rem,5.6vw,4.2rem)/1.03 var(--display);letter-spacing:-.035em;max-width:19ch}
+.thesis em{color:var(--accent);font-weight:400}
+.sub{font-size:clamp(1.05rem,1.8vw,1.25rem);color:var(--muted);max-width:58ch}
+.sub strong{color:var(--ink);font-weight:600}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;font:600 .92rem var(--body);text-decoration:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .btn:hover{border-color:var(--accent)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
-.facts{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;color:var(--muted);font-size:.92rem}
-.facts span::before{content:"▸ ";color:var(--accent)}
+.btn.pri{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.glance{font:.8rem var(--mono);color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 20px}
+.glance span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:1px}
 
-/* about */
-.about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px}
-@media (max-width:820px){.about-grid{grid-template-columns:1fr;gap:32px}}
-.about-text{display:grid;gap:16px;max-width:62ch}
-.about-text p{font-size:1.05rem}
-.stack{display:grid;gap:0;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);overflow:hidden}
-.stack-row{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:12px 16px;border-top:1px solid var(--line);align-items:baseline}
-.stack-row:first-child{border-top:0}
-.stack-row .label{color:var(--accent)}
-.stack-row div:last-child{font-size:.95rem}
-@media (max-width:440px){.stack-row{grid-template-columns:1fr;gap:2px}}
+.fig{margin:0;background:var(--fig);border-radius:14px;padding:clamp(16px,3vw,28px)}
+.figcap{font:500 .74rem var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:16px}
+@media (max-width:820px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 16px}}
+.stat{display:grid;gap:6px;align-content:start}
+.stat b{font:600 clamp(2rem,4.4vw,3rem)/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums lining-nums}
+.stat span{font-size:.92rem}
+.stat small{font:.72rem var(--mono);color:var(--muted)}
 
-/* featured */
-.featured{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,36px);display:grid;gap:28px}
-.feat-head{display:grid;gap:12px;max-width:70ch}
-.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--warm-soft);color:var(--warm);width:fit-content}
-.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;animation:blink 1.6s infinite}
-@keyframes blink{50%{opacity:.25}}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-@media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr)}}
-.kpi{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-.kpi b{display:block;font-family:var(--display);font-size:1.8rem;font-variant-numeric:tabular-nums;line-height:1.1}
-.kpi span{font-size:.85rem;color:var(--muted)}
+/* ---------- report sections ---------- */
+.sec{display:grid;grid-template-columns:170px minmax(0,1fr);gap:32px;padding-block:72px;border-top:1px solid var(--line)}
+.mark{font:500 .76rem var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;display:grid;gap:4px;align-content:start;position:sticky;top:84px;align-self:start}
+.mark b{font:600 2.4rem/1 var(--display);color:var(--accent);letter-spacing:-.02em;text-transform:none}
+.body{display:grid;gap:32px;min-width:0}
+h2{font:600 clamp(1.75rem,3.6vw,2.5rem)/1.1 var(--display);letter-spacing:-.02em;max-width:24ch}
+h3{font:600 1.4rem/1.2 var(--display);letter-spacing:-.01em}
+.lede{color:var(--muted);max-width:62ch;font-size:1.02rem;margin-top:12px}
+@media (max-width:760px){
+  .sec{grid-template-columns:1fr;gap:16px;padding-block:52px}
+  .mark{position:static;display:flex;gap:10px;align-items:baseline}
+  .mark b{font-size:1.5rem}
+}
 
-/* matcher */
-.matcher{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--bg);display:grid;gap:16px}
-.m-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface)}
-.seg button{border:0;background:transparent;color:var(--muted);padding:7px 14px;border-radius:999px;font:600 .88rem var(--body);cursor:pointer}
+/* ---------- case studies ---------- */
+.case{display:grid;gap:20px;min-width:0}
+.case + .case{padding-top:40px;border-top:1px solid var(--line)}
+.kicker{font:500 .74rem var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.kicker em{font-style:normal;color:var(--flag);background:var(--flag-soft);padding:2px 8px;border-radius:999px}
+.case-head{display:grid;gap:10px}
+.case-head .stack{font:.76rem var(--mono);color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:6px 0;align-items:center;font:.74rem var(--mono);color:var(--muted);padding:10px 14px;background:var(--fig);border-radius:8px}
+.flow span{white-space:nowrap}
+.flow span + span::before{content:"→";color:var(--accent);margin:0 8px}
+.par{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+@media (max-width:820px){.par{grid-template-columns:1fr;gap:16px}}
+.par > div{display:grid;gap:6px;align-content:start;border-top:2px solid var(--ink);padding-top:10px}
+.par > div:last-child{border-top-color:var(--accent)}
+.par .label{font-size:.7rem}
+.par p{font-size:.96rem}
+.par .res{font-weight:600}
+details.why{border-top:1px solid var(--line);padding-top:12px}
+details.why summary{cursor:pointer;font-weight:600;font-size:.94rem;color:var(--accent);list-style:none;width:fit-content}
+details.why summary::-webkit-details-marker{display:none}
+details.why summary::before{content:"+ ";font-family:var(--mono)}
+details.why[open] summary::before{content:"− "}
+details.why ul{margin:12px 0 0;padding-left:18px;display:grid;gap:8px;font-size:.95rem;max-width:75ch}
+.case-foot{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;font-size:.92rem}
+.case-foot a{font-weight:600;text-decoration:none}
+.case-foot a:hover{text-decoration:underline}
+
+.feat-figs{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px}
+@media (max-width:860px){.feat-figs{grid-template-columns:1fr}}
+.dag svg{width:100%;height:auto;display:block;margin-top:12px}
+.dag text{font-family:var(--mono);font-size:12px;fill:var(--ink)}
+.dag .sm{font-size:10.5px;fill:var(--muted)}
+.dag .box{fill:var(--surface);stroke:var(--line);stroke-width:1.2}
+.dag .box.out{fill:var(--accent-soft);stroke:var(--accent)}
+.dag .box.rev{fill:var(--flag-soft);stroke:var(--flag)}
+.dag .edge{fill:none;stroke:var(--line);stroke-width:2}
+.dag .pulse{fill:none;stroke:var(--accent);stroke-width:2;stroke-dasharray:3 11;animation:flow 1.4s linear infinite}
+.dag .pulse.rev{stroke:var(--flag)}
+@keyframes flow{to{stroke-dashoffset:-28}}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px;margin-top:14px}
+.kpis b{display:block;font:600 2rem/1.05 var(--display);font-variant-numeric:tabular-nums lining-nums}
+.kpis span{font-size:.88rem;color:var(--muted)}
+.kpis p{grid-column:1 / -1;font-size:.86rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+
+/* matcher demo */
+.matcher{display:grid;gap:14px}
+.m-bar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--muted);padding:7px 13px;border-radius:999px;cursor:pointer;font:600 .84rem var(--body)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-.m-status{font-size:.95rem;min-height:1.6em}
-.m-status.good{color:var(--ok)} .m-status.badc{color:var(--bad)}
-.lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-@media (max-width:760px){.lanes{grid-template-columns:1fr}}
-.lane{border:1px dashed var(--line);border-radius:12px;padding:12px;display:grid;gap:8px;align-content:start;min-width:0}
-.lane.result{border-style:solid;background:var(--surface)}
-.lane.result.wrong{border-color:var(--bad);background:var(--bad-soft)}
-.lane.result.review{border-color:var(--warm)}
-.lane-h{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.lane-h b{font-family:var(--display);font-size:1rem}
-.lane-h small{color:var(--muted);font-size:.8rem}
-.rec{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px;padding:8px 10px;font-size:.84rem;display:grid;gap:2px;min-width:0}
-.rec .id{font-family:var(--mono);font-size:.78rem;color:var(--c);font-weight:500}
+.m-status{font-size:.94rem;min-height:1.5em}
+.m-status.good{color:var(--good)} .m-status.bad{color:var(--bad)}
+.lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.lane{background:var(--surface);border-radius:10px;padding:10px 12px;border:1px solid transparent;display:grid;gap:6px;align-content:start;min-width:0}
+.lane.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.lane.review{border-color:var(--flag)}
+.lane-h{display:flex;justify-content:space-between;gap:8px;align-items:baseline;font:600 .98rem var(--display)}
+.lane-h small{font:400 .76rem var(--body);color:var(--muted);white-space:nowrap}
+.rec{border-top:1px solid var(--line);padding:7px 2px 2px;display:grid;gap:1px;font-size:.84rem;min-width:0}
+.rec .id{font:500 .76rem var(--mono);color:var(--c)}
+.rec .id::before{content:"";display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--c);margin-right:6px}
 .rec .nm{font-weight:600;overflow-wrap:anywhere}
-.rec .ad{color:var(--muted);font-family:var(--mono);font-size:.75rem;overflow-wrap:anywhere}
-.rec .why{margin-top:4px;font-size:.78rem;color:var(--ink);background:var(--accent-soft);border-radius:6px;padding:4px 7px}
-.rec .why.flag{background:var(--warm-soft)}
-.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.82rem;color:var(--muted)}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.rec .ad{font:.73rem var(--mono);color:var(--muted);overflow-wrap:anywhere}
+.rec .why{margin-top:4px;font-size:.78rem;line-height:1.4;background:var(--accent-soft);border-radius:4px;padding:3px 7px}
+.rec .why.flag{background:var(--flag-soft)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:0}
+.swipe-hint{display:none;font:.72rem var(--mono);color:var(--muted)}
+@media (max-width:760px){
+  .lanes{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;overscroll-behavior-x:contain}
+  .lane{scroll-snap-align:start}
+  .lanes.single{grid-auto-columns:100%}
+  .swipe-hint{display:block}
+}
 
-.arch{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.arch .step{font-family:var(--mono);font-size:.8rem;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface)}
-.arch .step.now{border-color:var(--warm);color:var(--warm)}
-.arch .arrow{color:var(--muted)}
-.feat-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-@media (max-width:760px){.feat-cols{grid-template-columns:1fr}}
-.feat-cols ul{margin:8px 0 0;padding-left:18px;display:grid;gap:6px}
+/* spark figure */
+.bars{display:grid;gap:10px;margin-top:12px;font-size:.86rem}
+.bar{display:grid;grid-template-columns:170px minmax(0,1fr) 56px;gap:12px;align-items:center}
+.bar i{display:block;height:14px;border-radius:2px;background:var(--muted)}
+.bar.win i{background:var(--accent)}
+.bar b{font:600 .95rem var(--display);text-align:right;font-variant-numeric:tabular-nums}
+.bars .axis{font:.7rem var(--mono);color:var(--muted)}
+@media (max-width:520px){.bar{grid-template-columns:minmax(0,1fr) 48px;gap:4px 10px}.bar span{grid-column:1 / -1}}
 
-/* projects */
-.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
-.chip{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:6px 13px;font:500 .88rem var(--body);cursor:pointer}
-.chip[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-@media (max-width:760px){.grid{grid-template-columns:1fr}}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;gap:12px;align-content:start;min-width:0}
-.card:hover{border-color:color-mix(in srgb, var(--accent) 50%, var(--line))}
-.card-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
-.card .tag{font-family:var(--mono);font-size:.72rem;color:var(--muted);white-space:nowrap}
-.card p.sum{color:var(--muted);font-size:.95rem}
-.numbers{display:flex;flex-wrap:wrap;gap:8px}
-.numbers span{font-size:.8rem;background:var(--ok-soft);color:var(--ok);border-radius:6px;padding:3px 8px;font-weight:600}
-.tools{display:flex;flex-wrap:wrap;gap:6px}
-.tools span{font-family:var(--mono);font-size:.72rem;border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--muted)}
-details{border-top:1px solid var(--line);padding-top:10px}
-summary{cursor:pointer;font-weight:600;font-size:.92rem;color:var(--accent);list-style:none}
-summary::-webkit-details-marker{display:none}
-summary::before{content:"+ ";font-family:var(--mono)}
-details[open] summary::before{content:"− "}
-.deep{display:grid;gap:14px;margin-top:12px}
-.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;overflow-x:auto}
-.flow span{font-family:var(--mono);font-size:.74rem;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:4px 8px}
-.flow em{font-style:normal;color:var(--muted);font-size:.8rem}
-.deep ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.92rem}
-.links{display:flex;gap:14px;font-size:.9rem;font-weight:600}
-.links a{text-decoration:none}
-.links a:hover{text-decoration:underline}
+/* other projects */
+.other{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}
+@media (max-width:720px){.other{grid-template-columns:1fr}}
+.other article{padding:16px 0;border-top:1px solid var(--line);display:grid;gap:4px;align-content:start}
+.other h4{font:600 1.1rem var(--display)}
+.other p{font-size:.92rem;color:var(--muted)}
+.other .meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:baseline;margin-top:4px}
+.other .meta span{font:.72rem var(--mono);color:var(--muted)}
+.other .meta a{font-weight:600;font-size:.88rem;text-decoration:none}
+.other .num{color:var(--good);font-weight:600}
 
-/* experience */
-.timeline{display:grid;gap:0;border-left:2px solid var(--line);margin-left:6px}
-.job{position:relative;padding:0 0 30px 26px;display:grid;gap:8px;max-width:70ch}
-.job:last-child{padding-bottom:0}
-.job::before{content:"";position:absolute;left:-8px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--accent)}
-.job .when{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
-.job ul{margin:0;padding-left:18px;display:grid;gap:5px}
-.edu{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
-@media (max-width:640px){.edu{grid-template-columns:1fr}}
-.edu div{border:1px solid var(--line);border-radius:var(--radius);padding:16px;background:var(--surface)}
-.edu b{display:block;font-family:var(--display)}
-.edu span{color:var(--muted);font-size:.9rem}
+/* ---------- experience ---------- */
+.job{display:grid;grid-template-columns:210px minmax(0,1fr);gap:8px 32px;padding-block:24px;border-top:1px solid var(--line)}
+.job:first-child{border-top:0;padding-top:0}
+@media (max-width:760px){.job{grid-template-columns:1fr}}
+.job-l{display:grid;gap:3px;align-content:start}
+.job-l h3{font-size:1.25rem}
+.job-l span{font:.76rem var(--mono);color:var(--muted)}
+.job-r{display:grid;gap:8px;min-width:0}
+.role{font-weight:600}
+.client{font:500 .72rem var(--mono);text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-top:8px}
+.job ul{margin:0;padding-left:18px;display:grid;gap:7px;font-size:.96rem;max-width:72ch}
+.job strong{font-weight:600;box-shadow:inset 0 -.45em 0 var(--accent-soft)}
+.tools{font:.73rem var(--mono);color:var(--muted)}
+.edu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:620px){.edu{grid-template-columns:1fr}}
+.edu div{background:var(--fig);border-radius:10px;padding:14px 16px}
+.edu b{display:block;font:600 1.02rem var(--display)}
+.edu span{font-size:.88rem;color:var(--muted)}
 
-/* contact */
-.contact{display:grid;gap:18px;max-width:62ch}
-.contact h2{font-size:clamp(2rem,5vw,3rem)}
-.contact-row{display:flex;flex-wrap:wrap;gap:10px}
-footer{padding-block:28px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
-.todo{background:var(--warm-soft);color:var(--warm);border-radius:4px;padding:0 4px;font-family:var(--mono);font-size:.85em}
+/* ---------- skills + about ---------- */
+.skills{margin:0}
+.sk{display:grid;grid-template-columns:200px minmax(0,1fr);gap:4px 24px;padding-block:12px;border-top:1px solid var(--line);font-size:.96rem}
+.sk:first-child{border-top:0;padding-top:0}
+@media (max-width:620px){.sk{grid-template-columns:1fr}}
+.sk dt{font:500 .74rem var(--mono);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding-top:3px}
+.sk dd{margin:0}
+.sk.core dt{color:var(--accent)}
+.sk.core dd{font-weight:600}
+.about{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 40px;padding-top:28px;border-top:1px solid var(--line)}
+@media (max-width:760px){.about{grid-template-columns:1fr}}
+.about p{font-size:1rem}
+.about p:first-child{font:400 1.25rem/1.45 var(--display);grid-column:1 / -1;max-width:56ch}
 
-/* what I bring */
-.bring{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-@media (max-width:900px){.bring{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:480px){.bring{grid-template-columns:1fr}}
-.bring div{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:8px;grid-template-rows:auto 1fr auto}
-.bring .proof{font-family:var(--mono);font-size:.74rem;color:var(--accent);padding-top:10px;border-top:1px solid var(--line)}
-.bring b{font-family:var(--display);font-size:1.08rem;line-height:1.25}
-.bring p{color:var(--muted);font-size:.93rem}
-.bring .cookie{background:var(--warm-soft);border-color:transparent}
-.bring .cookie b{color:var(--warm)}
-.bring .ico{font-size:1.4rem;line-height:1}
-
-/* off the clock */
-.fun-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
-@media (max-width:860px){.fun-grid{grid-template-columns:1fr}}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;gap:14px;min-width:0}
-.panel .sub{color:var(--muted);font-size:.93rem}
-.sql{font-family:var(--mono);font-size:.8rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre;line-height:1.55}
+/* ---------- appendix ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:7px 14px;font:600 .88rem var(--body);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.panel{background:var(--fig);border-radius:14px;padding:clamp(16px,3vw,24px);display:grid;gap:14px;min-width:0}
+.panel .sub2{color:var(--muted);font-size:.94rem;max-width:62ch}
+.panel h3{font-size:1.25rem}
+.sql{font:.8rem/1.55 var(--mono);background:var(--surface);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre}
 .sql .k{color:var(--accent);font-weight:500}
-.sql .o{color:var(--warm);font-weight:500}
-.tbl-wrap{overflow-x:auto}
+.sql .o{color:var(--flag);font-weight:500}
+.tbl-wrap{overflow-x:auto;background:var(--surface);border-radius:8px}
 table.food{width:100%;border-collapse:collapse;font-size:.9rem}
-.food th{text-align:left;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding:0}
-.food th button{all:unset;cursor:pointer;display:block;padding:8px 8px;width:100%;box-sizing:border-box}
-.food th button:hover,.food th button:focus-visible{color:var(--accent)}
+.food th{text-align:left;font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding:0}
+.food th button{all:unset;cursor:pointer;display:block;padding:9px 10px;width:100%;box-sizing:border-box}
+.food th button:hover{color:var(--accent)}
 .food th button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .food th[aria-sort="ascending"] button::after{content:" ↑"}
 .food th[aria-sort="descending"] button::after{content:" ↓"}
-.food td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.food td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 .food tr:last-child td{border-bottom:0}
 .food td.c{font-weight:600;white-space:nowrap}
 .food td small{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
 .food td.r{font-variant-numeric:tabular-nums;white-space:nowrap;width:84px}
-@media (max-width:480px){.food td.c{white-space:normal}.food td,.food th button{padding-left:5px;padding-right:5px}}
-.bar{display:block;height:6px;border-radius:3px;background:var(--line);margin-top:5px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--ok);border-radius:3px}
-.null{font-family:var(--mono);font-size:.8rem;color:var(--warm);background:var(--warm-soft);padding:1px 6px;border-radius:4px}
+@media (max-width:480px){.food td.c{white-space:normal}.food td,.food th button{padding-left:6px;padding-right:6px}}
+.mini{display:block;height:6px;border-radius:3px;background:var(--line);margin-top:5px;overflow:hidden}
+.mini i{display:block;height:100%;background:var(--good);border-radius:3px}
+.null{font:.8rem var(--mono);color:var(--flag);background:var(--flag-soft);padding:1px 6px;border-radius:4px}
 .foot{font-size:.82rem;color:var(--muted)}
 
-.board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:100%;max-width:300px;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--line);justify-self:center}
+.chess{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;align-items:center}
+@media (max-width:620px){.chess{grid-template-columns:1fr}}
+.board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:100%;max-width:300px;aspect-ratio:1;border-radius:8px;overflow:hidden;justify-self:center}
 .sq{border:0;padding:0;margin:0;min-width:0;min-height:0;overflow:hidden;display:grid;place-items:center;font-size:clamp(1.2rem,5.4vw,1.75rem);line-height:1;cursor:pointer;position:relative;color:#111;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Apple Symbols",serif}
 .sq.l{background:#e9edf7} .sq.d{background:#8d9cc9}
 .sq:hover{filter:brightness(1.07)}
@@ -246,368 +289,361 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
 .sq .co{position:absolute;left:3px;bottom:1px;font:500 9px var(--mono);color:#33405f;opacity:.75}
 .sq .wp{color:#fff;text-shadow:0 0 2px #000,0 0 1px #000}
 @keyframes nope{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
-.chess-msg{min-height:3em;font-size:.93rem}
-.chess-msg.good{color:var(--ok)}
-.chess-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.linkbtn{background:none;border:0;color:var(--accent);font:600 .88rem var(--body);cursor:pointer;padding:0}
+.chess-msg{min-height:3em;font-size:.94rem}
+.chess-msg.good{color:var(--good)}
+.linkbtn{background:none;border:0;color:var(--accent);font:600 .9rem var(--body);cursor:pointer;padding:0}
 
-.quiz{margin-top:16px}
 .qs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
 @media (max-width:760px){.qs{grid-template-columns:1fr}}
 .q{display:grid;gap:10px;align-content:start}
-.q h4{margin:0;font-family:var(--display);font-size:1.1rem}
+.q h4{font:600 1.08rem var(--display)}
 .opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.qopt{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:10px 12px;text-align:left;font:500 .92rem var(--body);cursor:pointer;display:flex;gap:8px;align-items:center}
+.qopt{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 12px;text-align:left;font:500 .9rem var(--body);cursor:pointer;display:flex;gap:8px;align-items:center}
 .qopt:hover{border-color:var(--accent)}
 .qopt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
-.qopt .e{font-size:1.15rem}
+.qopt .e{font-size:1.1rem}
 .trait{font-size:.88rem;color:var(--muted);min-height:2.8em}
-.result{border-radius:12px;padding:18px;background:var(--bg);border:1px dashed var(--line);display:grid;gap:6px}
-.result.done{background:var(--accent-soft);border:1px solid transparent}
-.result b{font-family:var(--display);font-size:1.3rem}
-</style>
+.result{border-radius:10px;padding:16px;background:var(--surface);display:grid;gap:6px}
+.result.done{background:var(--accent-soft)}
+.result b{font:600 1.3rem var(--display)}
 
+/* ---------- contact ---------- */
+.contact{padding-block:80px;border-top:1px solid var(--line);display:grid;gap:18px}
+.contact h2{font-size:clamp(2rem,5vw,3.4rem);max-width:18ch}
+.contact p{color:var(--muted);max-width:56ch}
+.contact .row{display:flex;flex-wrap:wrap;gap:10px}
+.email{font:500 1rem var(--mono);user-select:all;color:var(--ink)}
+.copy-lbl{font:500 .72rem var(--mono);text-transform:uppercase;letter-spacing:.06em;opacity:.75}
+footer{border-top:1px solid var(--line)}
+footer .wrap{padding-block:24px 32px;font-size:.84rem;color:var(--muted);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+</style>
 </head>
 <body>
-<nav>
+<a class="skip" href="#work">Skip to selected work</a>
+
+<nav class="nav" aria-label="Main">
   <div class="wrap">
     <a class="logo" href="#top">Devanshi Pandya</a>
-    <div class="navlinks">
-      <a href="#about" class="opt">About</a>
-      <a href="#work">Projects</a>
-      <a href="#experience" class="opt">Experience</a>
-      <a href="#fun" class="opt">Off the clock</a>
+    <div class="links">
+      <a href="#work"><b>§1</b>Work</a>
+      <a href="#experience"><b>§2</b>Experience</a>
+      <a href="#skills"><b>§3</b>Skills</a>
+      <a href="#appendix"><b>A</b>Off the clock</a>
       <a href="#contact">Contact</a>
     </div>
+    <a class="resume" href="Devanshi_Pandya_Resume.pdf" target="_blank" rel="noopener">Résumé PDF</a>
   </div>
 </nav>
 
-<main class="wrap" id="top">
+<main id="top">
+<div class="wrap">
 
-  <section class="hero">
-    <div class="hero-grid">
-      <div class="photo"><img src="photo.jpg" alt="Devanshi Pandya" width="480" height="480"></div>
+  <header class="hero">
+    <div class="who">
+      <img src="photo.jpg" alt="Devanshi Pandya" width="68" height="68">
       <div>
-        <p class="hello">Hi, I'm</p>
         <h1>Devanshi Pandya</h1>
-        <p class="role"><strong>Data engineer.</strong> I build the warehouses, dbt models and data-quality checks that turn messy, disconnected sources into one source of truth people can trust.</p>
-        <div class="cta">
-          <a class="btn primary" href="#work">See my projects</a>
-          <a class="btn" href="https://www.linkedin.com/in/devanshi4/" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="btn" href="https://github.com/devanshi4" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn" href="#contact">Get in touch</a>
+        <p>Data Engineer at Cloudify Technologies · New York, NY</p>
+        <p class="open">Open to data engineering roles</p>
+      </div>
+    </div>
+    <p class="thesis">The most dangerous data failure isn't a crash. <em>It's wrong data that looks fine.</em></p>
+    <p class="sub">I build the <strong>pipelines, dbt models and data-quality checks</strong> that catch it before anyone reports on it, for a Fortune 500 telecom provider and a global payments platform.</p>
+    <div class="cta">
+      <a class="btn pri" href="#work">Read the case studies</a>
+      <a class="btn" href="Devanshi_Pandya_Resume.pdf" target="_blank" rel="noopener">Download résumé</a>
+      <a class="btn" href="https://www.linkedin.com/in/devanshi4/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/devanshi4" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p class="glance"><span>4+ years in data</span><span>SQL · Python · PySpark</span><span>dbt · Snowflake · Airflow</span><span>Kafka · AWS</span><span>M.S., USC</span></p>
+    <figure class="fig">
+      <figcaption class="figcap">Fig. 1 · Selected results from production work</figcaption>
+      <div class="stats">
+        <div class="stat"><b>~37K</b><span>orphaned projects found in an Oracle audit, about 1 in 5</span><small>Telecom · now blocked at creation</small></div>
+        <div class="stat"><b>~91%</b><span>agreement for a local Llama 3.1 log classifier</span><small>Telecom · replaced a 400-line SQL rule</small></div>
+        <div class="stat"><b>40%</b><span>lower Spark processing costs after ETL tuning</span><small>Payments · partitioning + query fixes</small></div>
+        <div class="stat"><b>10K+</b><span>telecom sites monitored for activation health</span><small>Brillio · SQL checks</small></div>
+      </div>
+    </figure>
+  </header>
+
+  <!-- ================= §1 WORK ================= -->
+  <section class="sec" id="work" aria-labelledby="work-h">
+    <div class="mark"><b>§1</b>Selected work</div>
+    <div class="body">
+      <div>
+        <h2 id="work-h">Case studies</h2>
+        <p class="lede">Each one states the problem, the approach and what it produced, with the decisions and trade-offs behind it. Personal projects rebuild the kinds of problems I handle at work, so every step can be shown.</p>
+      </div>
+
+      <!-- Case 1 -->
+      <article class="case" id="entity-resolution">
+        <div class="case-head">
+          <p class="kicker">Case 1 · Entity resolution <em>In progress · built module by module</em></p>
+          <h3>Which records are the same cell tower?</h3>
+          <p class="stack">Telecom Entity Resolution &amp; Iceberg Lab · Spark SQL · Apache Iceberg · AWS S3 · EMR Serverless · Glue</p>
         </div>
-        <div class="facts">
-          <span>4+ years in data</span>
-          <span>Telecom and fintech clients</span>
-          <span>M.S., USC</span>
+        <div class="flow" aria-label="Data flow"><span>CSV · JSON · Parquet</span><span>bronze: raw as delivered</span><span>silver: standardize + match</span><span>gold: canonical sites + crosswalk</span><span>Iceberg on S3</span></div>
+        <div class="par">
+          <div><span class="label">Problem</span><p>Network inventory, RF planning and field operations describe the same cell sites with <b>no shared ID</b>. Names are abbreviated, addresses misspelled, coordinates rounded.</p></div>
+          <div><span class="label">Approach</span><p>Profile each source's grain, standardize, then match on evidence: house number, ZIP and distance. Inventory bridges the other two. Ambiguous records go to review instead of being guessed.</p></div>
+          <div><span class="label">Result</span><p class="res">78 source records resolve to 24 canonical sites, with a crosswalk back to every source ID, scored against a hand-built answer key.</p></div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="about">
-    <div class="about-grid">
-      <div class="about-text">
-        <p class="label">About me</p>
-        <h2>The most dangerous data failure isn't a crash</h2>
-        <p>A pipeline that crashes pages someone in five minutes. Wrong data that looks fine can sit in a report for days. Most of what I build exists to catch exactly that.</p>
-        <p>I'm a data engineer at Cloudify Technologies, a consultancy that embeds me on client data teams. For a Fortune 500 telecom provider I own production dbt models on Snowflake. For a global payments platform I built the data models and Spark pipelines behind risk analysis and fraud detection.</p>
-        <p>Most of my favorite work starts with numbers that don't agree. Two reports show different totals, a fifth of the projects have no site attached, or a 400-line SQL rule quietly double-counts errors. I trace the problem back to its source, fix it there, and add the check that stops it from coming back.</p>
-        <p>I started out as a data analyst at USC, which is why I think about the people reading the dashboard, not just the pipeline feeding it.</p>
-        <p>Outside work I build end-to-end pipelines to go deeper on the tools: streaming with Kafka and CDC, lakehouses on S3 and Iceberg, and Spark tuning I can measure in the Spark UI.</p>
-      </div>
-      <div style="display:grid;gap:12px;align-content:start;min-width:0">
-        <p class="label">What I work with</p>
-        <div class="stack">
-          <div class="stack-row"><div class="label">Ingest</div><div>Kafka, Debezium CDC, Kinesis, AWS Lambda, Fivetran</div></div>
-          <div class="stack-row"><div class="label">Store</div><div>Snowflake, S3, Apache Iceberg, Delta Lake, BigQuery, Redshift, PostgreSQL</div></div>
-          <div class="stack-row"><div class="label">Transform</div><div>dbt, SQL, PySpark, Spark SQL, Trino, Python, dbt Semantic Layer</div></div>
-          <div class="stack-row"><div class="label">Orchestrate</div><div>Dagster, Airflow, EventBridge</div></div>
-          <div class="stack-row"><div class="label">Platform</div><div>AWS (EMR, Glue, Athena, IAM), GCP, Databricks, Terraform, Docker, Git CI/CD</div></div>
-          <div class="stack-row"><div class="label">AI &amp; BI</div><div>Locally hosted LLMs (Llama, Mistral), LLM evaluation, Tableau, Looker, Power BI</div></div>
+        <div class="feat-figs">
+          <figure class="fig dag">
+            <figcaption class="figcap">Fig. 2 · Pipeline</figcaption>
+            <svg viewBox="0 0 440 236" role="img" aria-label="Three source files flow into a matching and testing step, which produces 24 canonical sites and a review queue">
+              <path class="edge" d="M144 34 C166 34 166 108 188 108"/><path class="pulse" d="M144 34 C166 34 166 108 188 108"/>
+              <path class="edge" d="M144 118 L188 118"/><path class="pulse" d="M144 118 L188 118"/>
+              <path class="edge" d="M144 202 C166 202 166 128 188 128"/><path class="pulse" d="M144 202 C166 202 166 128 188 128"/>
+              <path class="edge" d="M290 110 C310 110 310 78 330 78"/><path class="pulse" d="M290 110 C310 110 310 78 330 78"/>
+              <path class="edge" d="M290 126 C310 126 310 166 330 166"/><path class="pulse rev" d="M290 126 C310 126 310 166 330 166"/>
+              <rect class="box" x="1" y="14" width="143" height="40" rx="7"/><text x="12" y="31">inventory.csv</text><text class="sm" x="12" y="45">1 row per site</text>
+              <rect class="box" x="1" y="98" width="143" height="40" rx="7"/><text x="12" y="115">rf_plan.json</text><text class="sm" x="12" y="129">per plan version</text>
+              <rect class="box" x="1" y="182" width="143" height="40" rx="7"/><text x="12" y="199">field_ops.parquet</text><text class="sm" x="12" y="213">1 row per work order</text>
+              <rect class="box" x="188" y="90" width="102" height="56" rx="7"/><text x="198" y="112">match +</text><text x="198" y="128">tests</text>
+              <rect class="box out" x="330" y="56" width="109" height="44" rx="7"/><text x="340" y="74">sites</text><text class="sm" x="340" y="89">24 canonical</text>
+              <rect class="box rev" x="330" y="148" width="109" height="36" rx="7"/><text x="340" y="170">review queue</text>
+            </svg>
+          </figure>
+          <figure class="fig">
+            <figcaption class="figcap">The synthetic dataset</figcaption>
+            <div class="kpis">
+              <div><b>3</b><span>source systems</span></div>
+              <div><b>78</b><span>source records</span></div>
+              <div><b>24</b><span>sites in the answer key</span></div>
+              <div><b>0</b><span>shared keys</span></div>
+              <p>Real network data can't be shared, so I hand-built three files that mimic the problems I see at work. Every record tests a specific edge case.</p>
+            </div>
+          </figure>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="bring">
-    <div class="sec-head">
-      <p class="label">What I bring to a team</p>
-      <h2>Why you might want me on yours</h2>
-    </div>
-    <div class="bring">
-      <div><b>Build pipelines, batch and streaming</b><p>I get data from where it's created to where it's needed, on a schedule or as it happens.</p><span class="proof">Kafka · Debezium CDC · Kinesis · Lambda · Airflow · Dagster</span></div>
-      <div><b>Model data people can use</b><p>Layered dbt models and star schemas, and one source of truth when teams have conflicting numbers.</p><span class="proof">dbt · Snowflake · BigQuery · dbt Semantic Layer</span></div>
-      <div><b>Make it fast and cheap</b><p>Tuned Spark ETL for a payments platform and cut processing costs by 40%. Incremental loads and partitioning keep costs flat as data grows.</p><span class="proof">Spark · PySpark · Trino · Iceberg</span></div>
-      <div><b>Keep it reliable</b><p>Tests between layers, validation where data enters, and re-runs that never create duplicates, so bad data is caught before anyone reports on it.</p><span class="proof">dbt tests · constraints · idempotent loads</span></div>
-      <div><b>Run it on cloud infrastructure</b><p>Pipelines that live in version control and deploy the same way every time, with only the access they need.</p><span class="proof">AWS · GCP · Terraform · Docker · Git CI/CD · IAM</span></div>
-      <div><b>Work with the people who use the data</b><p>I started as an analyst, and I've built feature pipelines with data scientists and ML engineers. I can explain a data issue without jargon.</p><span class="proof">Analysts · data scientists · product teams</span></div>
-    </div>
-  </section>
-
-  <section id="work">
-    <div class="sec-head">
-      <p class="label">Featured project</p>
-      <h2>Which records are the same cell tower?</h2>
-      <p>The kind of problem I solve at work with telecom data, rebuilt from scratch so I can show every step.</p>
-    </div>
-
-    <div class="featured">
-      <div class="feat-head">
-        <span class="pill">In progress · built module by module</span>
-        <h3>Telecom Entity Resolution &amp; Iceberg Lab</h3>
-        <p>Three systems describe the same cell sites: network inventory, RF planning and field operations. They share <strong>no common ID</strong>. Names are abbreviated, addresses misspelled, coordinates rounded. This project works out which records describe the same physical site, builds one canonical table with a crosswalk back to every source ID, and maintains it with Spark SQL and Iceberg, first locally and then on AWS.</p>
-        <p><strong>The data is synthetic.</strong> Real network data can't be shared, so I hand-built three source files that mimic the problems I see at work. Every record tests a specific edge case, and an answer key records which site each one truly belongs to, so match quality can be scored instead of eyeballed.</p>
-      </div>
-
-      <div class="kpis">
-        <div class="kpi"><b>3</b><span>source systems</span></div>
-        <div class="kpi"><b>78</b><span>source records</span></div>
-        <div class="kpi"><b>24</b><span>sites in the answer key</span></div>
-        <div class="kpi"><b>0</b><span>shared keys</span></div>
-      </div>
-
-      <div class="matcher" id="matcher">
-        <div class="m-bar">
-          <div>
-            <p class="label">Try it: 9 records from the synthetic dataset</p>
+        <figure class="fig matcher" id="matcher">
+          <div class="m-bar">
+            <figcaption class="figcap">Fig. 3 · Try it: 9 records from the dataset</figcaption>
+            <div class="seg" role="group" aria-label="Matching approach">
+              <button type="button" data-mode="raw" aria-pressed="true">Raw sources</button>
+              <button type="button" data-mode="naive" aria-pressed="false">Match on name</button>
+              <button type="button" data-mode="evidence" aria-pressed="false">Match on evidence</button>
+            </div>
           </div>
-          <div class="seg" role="group" aria-label="Matching approach">
-            <button type="button" data-mode="raw" aria-pressed="true">Raw sources</button>
-            <button type="button" data-mode="naive" aria-pressed="false">Match on name</button>
-            <button type="button" data-mode="evidence" aria-pressed="false">Match on evidence</button>
-          </div>
-        </div>
-        <p class="m-status" id="mStatus" aria-live="polite">Three sources, nine records, no shared ID. How many towers are there?</p>
-        <div class="lanes" id="lanes"><div class="lane "><div class="lane-h"><b>Network inventory</b><small>3 records</small></div><div class="rec" data-id="NY-BRONX-017" style="--c:var(--src1)">
-    <span class="id">NY-BRONX-017</span><span class="nm">BRONX GRAND CONCOURSE</span><span class="ad">1250 Grand Concourse · 10456</span>
-    </div><div class="rec" data-id="NY-BX-0017" style="--c:var(--src1)">
-    <span class="id">NY-BX-0017</span><span class="nm">Bronx - Grand Concourse (legacy)</span><span class="ad">1250 GRAND CONCOURSE · 10456-2201</span>
-    </div><div class="rec" data-id="NY-BRONX-018" style="--c:var(--src1)">
-    <span class="id">NY-BRONX-018</span><span class="nm">Grand Concourse South</span><span class="ad">1100 Grand Concourse · 10456</span>
-    </div></div><div class="lane "><div class="lane-h"><b>RF planning</b><small>2 records</small></div><div class="rec" data-id="RF-10017" style="--c:var(--src2)">
-    <span class="id">RF-10017</span><span class="nm">Bronx Grand Concourse</span><span class="ad">40.83472, -73.91648</span>
-    </div><div class="rec" data-id="RF-10018" style="--c:var(--src2)">
-    <span class="id">RF-10018</span><span class="nm">Grand Concourse &amp; E 167th</span><span class="ad">40.82991, -73.91958</span>
-    </div></div><div class="lane "><div class="lane-h"><b>Field operations</b><small>4 records</small></div><div class="rec" data-id="WO-55001" style="--c:var(--src3)">
-    <span class="id">WO-55001</span><span class="nm">Bx Grand Concourse Site</span><span class="ad">1250 Grand Concourse, Bronx, NY 10456</span>
-    </div><div class="rec" data-id="WO-55002" style="--c:var(--src3)">
-    <span class="id">WO-55002</span><span class="nm">GRAND CONCOURSE - BRONX</span><span class="ad">1250 GRAND CONCRS BX NY 10456</span>
-    </div><div class="rec" data-id="WO-55003" style="--c:var(--src3)">
-    <span class="id">WO-55003</span><span class="nm">Grand Concourse S.</span><span class="ad">1100 Grand Concourse Bronx NY 10456</span>
-    </div><div class="rec" data-id="WO-55028" style="--c:var(--src3)">
-    <span class="id">WO-55028</span><span class="nm">Concourse</span><span class="ad">Grand Concourse, Bronx NY</span>
-    </div></div></div>
-        <div class="legend">
-          <span><i style="background:var(--src1)"></i>Network inventory (CSV)</span>
-          <span><i style="background:var(--src2)"></i>RF planning (nested JSON)</span>
-          <span><i style="background:var(--src3)"></i>Field operations (Parquet)</span>
-        </div>
-      </div>
-
-      <div class="feat-cols">
-        <div>
-          <p class="label">Architecture</p>
-          <div class="arch" style="margin-top:10px">
-            <span class="step">CSV · JSON · Parquet</span><span class="arrow">→</span>
-            <span class="step now">Bronze: raw as delivered</span><span class="arrow">→</span>
-            <span class="step">Silver: standardize + match</span><span class="arrow">→</span>
-            <span class="step">Gold: canonical sites + crosswalk</span><span class="arrow">→</span>
-            <span class="step">Iceberg on S3 · EMR Serverless · Glue</span>
-          </div>
+          <p class="m-status" id="mStatus" aria-live="polite">Three sources, nine records, no shared ID. How many towers are there?</p>
+          <div class="lanes" id="lanes"></div>
+          <p class="swipe-hint">Swipe to see every group →</p>
+          <div class="legend"><span><i style="background:var(--src1)"></i>Network inventory (CSV)</span><span><i style="background:var(--src2)"></i>RF planning (nested JSON)</span><span><i style="background:var(--src3)"></i>Field operations (Parquet)</span></div>
+        </figure>
+        <details class="why">
+          <summary>Decisions and trade-offs</summary>
           <ul>
-            <li><strong>Profile before matching.</strong> Each source has a different grain: one row per site, per plan version, or per work order.</li>
-            <li><strong>Inventory is the bridge.</strong> RF planning and field ops share only a free-text name, so they link through inventory, the one source with both coordinates and an address.</li>
+            <li><b>Synthetic data with an answer key.</b> Because the true site for every record is known, precision and recall are measured, not eyeballed.</li>
+            <li><b>Profile before matching.</b> Each source has a different grain (per site, per plan version, per work order), so joining them directly would multiply rows.</li>
+            <li><b>Inventory is the bridge.</b> RF planning and field ops share only a free-text name, so they link through inventory, the one source with both coordinates and an address.</li>
+            <li><b>Ambiguity goes to review.</b> A work order with no house number could belong to two towers. The pipeline flags it rather than guessing.</li>
+            <li><b>Explicit survivorship rules.</b> When field ops reports an equipment swap newer than inventory, the newer, more specific source wins.</li>
           </ul>
+        </details>
+        <div class="case-foot"><a href="https://github.com/devanshi4/cell-site-entity-resolution" target="_blank" rel="noopener">View code on GitHub →</a></div>
+      </article>
+
+      <!-- Case 2 -->
+      <article class="case" id="spark-lab">
+        <div class="case-head">
+          <p class="kicker">Case 2 · Spark performance</p>
+          <h3>Spark Performance Lab</h3>
+          <p class="stack">PySpark 4.0 · Spark UI · History Server · multi-executor cluster</p>
         </div>
-        <div>
-          <p class="label">Decisions so far</p>
+        <div class="flow" aria-label="Investigation flow"><span>skewed join (baseline)</span><span>diagnose in Spark UI</span><span>AQE skew join</span><span>salted join</span><span>aggregate before join</span><span>verify + compare</span></div>
+        <div class="par">
+          <div><span class="label">Problem</span><p>One merchant owns 21 of 30 million rows. In the baseline join, one task read 310 MB and ran 12.7 s while the median task took half a second.</p></div>
+          <div><span class="label">Approach</span><p>Reproduce it on a real cluster, then compare three fixes: AQE skew join, salting, and aggregating before the join. Each must return the same 7,200-row report.</p></div>
+          <div><span class="label">Result</span><p class="res">Aggregating first made the join stage 5× faster and removed all disk spill. Total job time fell from 23 s to 17 s.</p></div>
+        </div>
+        <figure class="fig">
+          <figcaption class="figcap">Fig. 4 · Join stage time, seconds (same output in both runs)</figcaption>
+          <div class="bars" role="img" aria-label="Join stage time: baseline 12.7 seconds; aggregate before join 2.4 seconds">
+            <div class="bar"><span>Baseline</span><i style="width:100%"></i><b>12.7</b></div>
+            <div class="bar win"><span>Aggregate before join</span><i style="width:18.9%"></i><b>2.4</b></div>
+            <p class="axis">Disk spill 274 MB → 0 · AQE alone cut runtime 26%</p>
+          </div>
+        </figure>
+        <details class="why">
+          <summary>Decisions and trade-offs</summary>
           <ul>
-            <li><strong>Synthetic data with an answer key.</strong> Because the true site for every record is known, precision and recall can be measured, not guessed.</li>
-            <li><strong>Ambiguity goes to review.</strong> A work order with no house number could belong to two towers. The pipeline flags it instead of guessing.</li>
-            <li><strong>Conflicts follow explicit survivorship rules.</strong> When field ops reports an equipment swap newer than inventory, the newer, more specific source wins.</li>
+            <li><b>Changing the query beat tuning Spark.</b> Aggregating before the join removed the spill entirely; configuration alone (AQE) helped less.</li>
+            <li><b>Balanced isn't the same as fast.</b> Salting evened out task sizes but added as much work as it saved, so I rejected it for this workload.</li>
+            <li><b>Correctness first.</b> Every fix is checked against the baseline's 7,200-row report before its timing counts.</li>
           </ul>
-          <div class="links" style="margin-top:14px"><a href="https://github.com/devanshi4/cell-site-entity-resolution" target="_blank" rel="noopener">View code →</a></div>
+        </details>
+        <div class="case-foot"><a href="#contact">Code available on request →</a></div>
+      </article>
+
+      <!-- Case 3 -->
+      <article class="case" id="market-pulse">
+        <div class="case-head">
+          <p class="kicker">Case 3 · Streaming</p>
+          <h3>Market Pulse</h3>
+          <p class="stack">Postgres · Debezium · Kafka · Apache Iceberg · GCS · BigQuery · dbt · Dagster · Docker</p>
+        </div>
+        <div class="flow" aria-label="Data flow"><span>Postgres WAL</span><span>Debezium CDC</span><span>Kafka</span><span>micro-batch writer</span><span>Iceberg (bronze)</span><span>dbt silver/gold</span><span>BigQuery</span></div>
+        <div class="par">
+          <div><span class="label">Problem</span><p>Stream trades from a simulated brokerage, a trade every 3 s and prices every 60 s, into portfolio analytics without losing or double-counting a trade.</p></div>
+          <div><span class="label">Approach</span><p>Debezium reads the Postgres write-ahead log. Kafka offsets commit only after a successful Iceberg write; dbt deduplicates and builds P&amp;L, moving averages and account rankings.</p></div>
+          <div><span class="label">Result</span><p class="res">No lost or double-counted trades, and every row carries its topic, partition, offset and CDC operation for debugging.</p></div>
+        </div>
+        <details class="why">
+          <summary>Decisions and trade-offs</summary>
+          <ul>
+            <li><b>CDC instead of app-published events.</b> Reading the WAL means the stream can never drift from the database.</li>
+            <li><b>At-least-once, then dedupe.</b> Committing offsets after the write means a crash can replay but never lose data; dbt removes the duplicates.</li>
+            <li><b>Dagster for orchestration.</b> Asset-based runs make the tested model refreshes and bronze health checks visible in one place.</li>
+          </ul>
+        </details>
+        <div class="case-foot"><a href="https://github.com/devanshi4/market-pulse" target="_blank" rel="noopener">View code on GitHub →</a></div>
+      </article>
+
+      <!-- Case 4 -->
+      <article class="case" id="lakehouse">
+        <div class="case-head">
+          <p class="kicker">Case 4 · Lakehouse on AWS</p>
+          <h3>E-commerce Lakehouse</h3>
+          <p class="stack">Kinesis · Lambda · S3 · PySpark · AWS Glue · Athena · Airflow · IAM</p>
+        </div>
+        <div class="flow" aria-label="Data flow"><span>Kinesis</span><span>Lambda</span><span>S3 bronze</span><span>PySpark silver</span><span>PySpark gold</span><span>Glue Catalog</span><span>Athena</span></div>
+        <div class="par">
+          <div><span class="label">Problem</span><p>Clickstream events arrive continuously (about 5 per second) while orders arrive in a daily batch. Both need to land in one queryable model.</p></div>
+          <div><span class="label">Approach</span><p>Event-driven Lambda for streaming, a scheduled Airflow DAG for batch, PySpark through bronze, silver and gold layers on S3, cataloged in Glue.</p></div>
+          <div><span class="label">Result</span><p class="res">5 gold tables queryable in Athena, with date partitions that keep scans and cost small.</p></div>
+        </div>
+        <details class="why">
+          <summary>Decisions and trade-offs</summary>
+          <ul>
+            <li><b>Both ingestion patterns in one platform</b>, so the same medallion layers serve real-time and batch data.</li>
+            <li><b>Hive-style date partitions</b> keep Athena scans, and cost, proportional to the dates queried.</li>
+            <li><b>Least-privilege IAM</b> with separate roles for Lambda and Glue.</li>
+          </ul>
+        </details>
+        <div class="case-foot"><a href="https://github.com/devanshi4/ecommerce-lakehouse-aws" target="_blank" rel="noopener">View code on GitHub →</a></div>
+      </article>
+
+      <div>
+        <p class="figcap" style="margin-bottom:6px">More projects</p>
+        <div class="other">
+          <article>
+            <h4>Weather Data Platform</h4>
+            <p>A scheduled Lambda lands hourly weather in S3; Airflow loads Snowflake and dbt builds a tested star schema. <span class="num">Re-runs never duplicate</span>, and the fact table loads incrementally.</p>
+            <div class="meta"><span>Lambda · S3 · Snowflake · dbt · Airflow</span><a href="https://github.com/devanshi4/weather-elt-snowflake" target="_blank" rel="noopener">Code →</a></div>
+          </article>
+          <article>
+            <h4>Yelp Reviews Analytics</h4>
+            <p>A dbt project over 2,000+ reviews in staging, intermediate and mart layers, with tests, documented lineage and a product health score built in SQL.</p>
+            <div class="meta"><span>Python · PostgreSQL · dbt</span><a href="https://github.com/devanshi4/yelp-reviews-dbt" target="_blank" rel="noopener">Code →</a></div>
+          </article>
+          <article>
+            <h4>Natural-Language SQL Assistant</h4>
+            <p>Answers plain-English questions from a live PostgreSQL database. When generated SQL fails, the error goes back to the model and it retries.</p>
+            <div class="meta"><span>LangChain · OpenAI · PostgreSQL · Streamlit</span><a href="https://github.com/devanshi4/text-to-sql-assistant" target="_blank" rel="noopener">Code →</a></div>
+          </article>
+          <article>
+            <h4>Customer Churn Prediction</h4>
+            <p>XGBoost with SHAP explanations for 7,043 telecom customers. <span class="num">ROC-AUC 0.82</span>, 60% precision on churners, reported against an always-stays baseline.</p>
+            <div class="meta"><span>Python · XGBoost · SHAP · Streamlit</span><a href="https://github.com/devanshi4/telecom-churn-prediction" target="_blank" rel="noopener">Code →</a></div>
+          </article>
         </div>
       </div>
     </div>
-
-    <div class="sec-head" style="margin-top:72px">
-      <p class="label">More projects</p>
-      <h2>End-to-end pipelines</h2>
-      <p>Each one runs from raw source to a tested, queryable output. Open a project for its architecture and the trade-offs behind it.</p>
-    </div>
-
-    <div class="filters" id="filters" role="group" aria-label="Filter projects">
-      <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
-      <button class="chip" type="button" data-f="streaming" aria-pressed="false">Streaming</button>
-      <button class="chip" type="button" data-f="aws" aria-pressed="false">AWS</button>
-      <button class="chip" type="button" data-f="dbt" aria-pressed="false">dbt</button>
-      <button class="chip" type="button" data-f="spark" aria-pressed="false">Spark</button>
-      <button class="chip" type="button" data-f="ai" aria-pressed="false">ML &amp; AI</button>
-    </div>
-
-    <div class="grid" id="grid">
-  <article class="card" data-f="streaming dbt">
-    <div class="card-top"><h3>Market Pulse</h3><span class="tag">Streaming · GCP</span></div>
-    <p class="sum">A real-time pipeline for a simulated stock brokerage. Trades are captured from Postgres with change data capture, streamed through Kafka with live market prices, landed as Iceberg tables, and modeled into portfolio analytics.</p>
-    <div class="numbers"><span>Trade every 3 s</span><span>Prices every 60 s</span><span>At-least-once delivery</span></div>
-    <div class="tools"><span>Postgres</span><span>Debezium</span><span>Kafka</span><span>Iceberg</span><span>GCS</span><span>BigQuery</span><span>dbt</span><span>Dagster</span><span>Docker</span></div>
-    <details>
-      <summary>Architecture &amp; decisions</summary>
-      <div class="deep">
-        <div class="flow"><span>Postgres WAL</span><em>→</em><span>Debezium CDC</span><em>→</em><span>Kafka</span><em>→</em><span>Micro-batch writer</span><em>→</em><span>Iceberg (bronze)</span><em>→</em><span>dbt silver/gold</span><em>→</em><span>BigQuery</span></div>
-        <ul><li><b>CDC instead of app-published events.</b> Debezium reads the write-ahead log, so the stream can never drift from the database.</li><li><b>Offsets committed only after a successful write.</b> A crash never loses data; duplicates are removed downstream.</li><li><b>Lineage on every row.</b> Topic, partition, offset and CDC operation travel with the data for debugging.</li></ul>
-      </div>
-    </details>
-    <div class="links"><a href="https://github.com/devanshi4/market-pulse" target="_blank" rel="noopener">View code →</a></div>
-  </article>
-  <article class="card" data-f="aws dbt">
-    <div class="card-top"><h3>Weather Data Platform</h3><span class="tag">Batch ELT · AWS</span></div>
-    <p class="sum">A scheduled Lambda pulls hourly weather for several cities into S3. Airflow loads it into Snowflake, and dbt turns it into a tested star schema.</p>
-    <div class="numbers"><span>Idempotent at every layer</span><span>Incremental fact model</span><span>Tests between layers</span></div>
-    <div class="tools"><span>Lambda</span><span>EventBridge</span><span>S3</span><span>Snowflake</span><span>dbt</span><span>Airflow</span><span>Docker</span></div>
-    <details>
-      <summary>Architecture &amp; decisions</summary>
-      <div class="deep">
-        <div class="flow"><span>Open-Meteo API</span><em>→</em><span>Lambda (daily)</span><em>→</em><span>S3 raw JSON</span><em>→</em><span>COPY INTO</span><em>→</em><span>Snowflake RAW</span><em>→</em><span>dbt star schema</span></div>
-        <ul><li><b>Re-running never duplicates.</b> Per-date S3 keys, COPY INTO file tracking and a QUALIFY dedupe all make retries safe.</li><li><b>Incremental processing.</b> The fact table merges only rows past the watermark, so cost stays flat as history grows.</li><li><b>Raw kept immutable.</b> The whole warehouse can be rebuilt from S3 if a transformation bug is found.</li></ul>
-      </div>
-    </details>
-    <div class="links"><a href="https://github.com/devanshi4/weather-elt-snowflake" target="_blank" rel="noopener">View code →</a></div>
-  </article>
-  <article class="card" data-f="aws streaming spark">
-    <div class="card-top"><h3>E-commerce Lakehouse</h3><span class="tag">Streaming + batch · AWS</span></div>
-    <p class="sum">Clickstream events stream in through Kinesis while daily orders arrive in batch. PySpark moves both through bronze, silver and gold layers on S3, queryable in Athena.</p>
-    <div class="numbers"><span>5 events/s streamed</span><span>200 orders/day batch</span><span>5 gold tables</span></div>
-    <div class="tools"><span>Kinesis</span><span>Lambda</span><span>S3</span><span>PySpark</span><span>Glue</span><span>Athena</span><span>Airflow</span><span>IAM</span></div>
-    <details>
-      <summary>Architecture &amp; decisions</summary>
-      <div class="deep">
-        <div class="flow"><span>Kinesis</span><em>→</em><span>Lambda</span><em>→</em><span>S3 bronze</span><em>→</em><span>PySpark silver</span><em>→</em><span>PySpark gold</span><em>→</em><span>Glue Catalog</span><em>→</em><span>Athena</span></div>
-        <ul><li><b>Both ingestion patterns in one platform.</b> Event-driven Lambda for streaming, a scheduled Airflow DAG for batch.</li><li><b>Hive-style date partitions</b> keep Athena scans, and cost, small.</li><li><b>Least-privilege IAM</b> with separate roles for Lambda and Glue.</li></ul>
-      </div>
-    </details>
-    <div class="links"><a href="https://github.com/devanshi4/ecommerce-lakehouse-aws" target="_blank" rel="noopener">View code →</a></div>
-  </article>
-  <article class="card" data-f="spark">
-    <div class="card-top"><h3>Spark Performance Lab</h3><span class="tag">Spark tuning</span></div>
-    <p class="sum">A lab where I reproduce Spark performance problems on a real multi-executor cluster, diagnose them in the Spark UI, and measure each fix. First up: a join where one merchant owns 21 of 30 million rows.</p>
-    <div class="numbers"><span>Job 23 s → 17 s</span><span>Join stage 12.7 s → 2.4 s</span><span>Disk spill 274 MB → 0</span></div>
-    <div class="tools"><span>PySpark 4.0</span><span>Spark UI</span><span>History Server</span><span>Python</span></div>
-    <details>
-      <summary>Architecture &amp; decisions</summary>
-      <div class="deep">
-        <div class="flow"><span>Skewed join (baseline)</span><em>→</em><span>Investigate in Spark UI</span><em>→</em><span>AQE skew join</span><em>→</em><span>Salted join</span><em>→</em><span>Aggregate before join</span><em>→</em><span>Verify + compare</span></div>
-        <ul><li><b>The skew was visible in one task:</b> it read 310 MB and ran 12.7 s while the median task took half a second.</li><li><b>Changing the query beat tuning Spark:</b> aggregating before the join removed all spill and made the join stage 5× faster; AQE alone cut runtime 26%.</li><li><b>Balanced isn't the same as fast:</b> salting evened out the tasks but added as much work as it saved, so the runtime didn't improve.</li><li><b>Correctness first:</b> every fix returns exactly the same 7,200-row report as the baseline.</li></ul>
-      </div>
-    </details>
-    <div class="links"><a href="#contact">Code available on request →</a></div>
-  </article>
-  <article class="card" data-f="dbt">
-    <div class="card-top"><h3>Yelp Reviews Analytics</h3><span class="tag">Analytics engineering</span></div>
-    <p class="sum">A dbt project over 2,000+ Yelp reviews, layered into staging, intermediate and mart models with tests and documented lineage.</p>
-    <div class="numbers"><span>2,000+ reviews</span><span>3 mart models</span><span>Lineage graph</span></div>
-    <div class="tools"><span>Python</span><span>PostgreSQL</span><span>dbt</span><span>Hugging Face</span></div>
-    <details>
-      <summary>Architecture &amp; decisions</summary>
-      <div class="deep">
-        <div class="flow"><span>Hugging Face dataset</span><em>→</em><span>Python loader</span><em>→</em><span>Postgres raw</span><em>→</em><span>dbt staging</span><em>→</em><span>dbt intermediate</span><em>→</em><span>dbt marts</span></div>
-        <ul><li><b>Layered models</b> keep cleaning, business logic and reporting separate and testable.</li><li><b>Scores built in SQL:</b> a product health score and reviewer-credibility indicators.</li></ul>
-      </div>
-    </details>
-    <div class="links"><a href="https://github.com/devanshi4/yelp-reviews-dbt" target="_blank" rel="noopener">View code →</a></div>
-  </article>
-  <article class="card" data-f="ai">
-    <div class="card-top"><h3>Natural-Language SQL Assistant</h3><span class="tag">GenAI</span></div>
-    <p class="sum">Ask a question in plain English and get an answer from a live PostgreSQL database. The app writes the SQL, runs it, and summarizes the result.</p>
-    <div class="numbers"><span>Self-correcting SQL</span><span>5-table joins</span></div>
-    <div class="tools"><span>LangChain</span><span>OpenAI</span><span>PostgreSQL</span><span>Streamlit</span></div>
-    <details>
-      <summary>Architecture &amp; decisions</summary>
-      <div class="deep">
-        <div class="flow"><span>Question</span><em>→</em><span>Schema lookup</span><em>→</em><span>SQL generation</span><em>→</em><span>Run on Postgres</span><em>→</em><span>Plain-English answer</span></div>
-        <ul><li><b>Self-correcting.</b> When generated SQL fails, the database error goes back to the model and it retries.</li><li><b>Schema-aware prompts</b> let it handle joins across 15 tables.</li></ul>
-      </div>
-    </details>
-    <div class="links"><a href="https://github.com/devanshi4/text-to-sql-assistant" target="_blank" rel="noopener">View code →</a></div>
-  </article>
-  <article class="card" data-f="ai">
-    <div class="card-top"><h3>Customer Churn Prediction</h3><span class="tag">Machine learning</span></div>
-    <p class="sum">An XGBoost model that flags telecom customers likely to cancel, with SHAP explanations so support teams know why each customer is at risk.</p>
-    <div class="numbers"><span>7,043 customers</span><span>ROC-AUC 0.82</span><span>60% precision on churners</span></div>
-    <div class="tools"><span>Python</span><span>XGBoost</span><span>SHAP</span><span>Streamlit</span></div>
-    <details>
-      <summary>Architecture &amp; decisions</summary>
-      <div class="deep">
-        <div class="flow"><span>Raw customer data</span><em>→</em><span>Clean + encode</span><em>→</em><span>XGBoost</span><em>→</em><span>SHAP explanations</span><em>→</em><span>Streamlit app</span></div>
-        <ul><li><b>Explainable over black-box.</b> SHAP shows contract type, tenure and monthly charges as the top churn drivers; month-to-month customers leave most.</li><li><b>Measured honestly.</b> Only 26.5% of customers churn, so I report ROC-AUC, precision and recall against an always-stays baseline, not just accuracy.</li><li><b>What-if scenarios.</b> Managers can change a customer's plan and see the risk update.</li></ul>
-      </div>
-    </details>
-    <div class="links"><a href="https://github.com/devanshi4/telecom-churn-prediction" target="_blank" rel="noopener">View code →</a></div>
-  </article></div>
   </section>
 
-  <section id="experience">
-    <div class="sec-head">
-      <p class="label">Experience</p>
-      <h2>Where I've worked</h2>
-    </div>
-    <div class="timeline">
-      <div class="job">
-        <span class="when">Jul 2024 – present · Remote</span>
-        <h3>Data Engineer, Cloudify Technologies</h3>
-        <p class="label" style="color:var(--accent)">Client: Fortune 500 telecom provider</p>
-        <ul>
-          <li>Own production dbt models on Snowflake that turn raw telecom operational data into clean, tested, analytics-ready tables.</li>
-          <li>Defined a single source of truth after tracing conflicting metric totals to inconsistent joins and filters across source tables.</li>
-          <li>Found that 1 in 5 projects had no site attached, silently breaking every site-level report, and added validation at entry so bad records are blocked at creation.</li>
-          <li>Replaced a brittle 400-line SQL CASE statement that double-counted errors with a locally hosted Llama model that sorts raw JSON logs into ~20 categories, benchmarked against the old rules.</li>
-        </ul>
-        <p class="label" style="color:var(--accent);margin-top:6px">Client: Global payments platform</p>
-        <ul>
-          <li>Tuned Spark ETL through partitioning, resource tuning and query fixes, cutting processing costs by 40%.</li>
-          <li>Built data models in SQL, Python and Trino for risk analysis, merchant insights and reporting.</li>
-          <li>Delivered feature pipelines for payments fraud-detection models with data scientists and ML engineers.</li>
-        </ul>
+  <!-- ================= §2 EXPERIENCE ================= -->
+  <section class="sec" id="experience" aria-labelledby="exp-h">
+    <div class="mark"><b>§2</b>Experience</div>
+    <div class="body">
+      <h2 id="exp-h">Where I've worked</h2>
+      <div>
+        <article class="job">
+          <div class="job-l"><h3>Cloudify Technologies</h3><span>Jul 2024 – present · Remote</span></div>
+          <div class="job-r">
+            <p class="role">Data Engineer · consultancy, embedded on client data teams</p>
+            <p class="client">Client: Fortune 500 telecom provider</p>
+            <ul>
+              <li>Replaced a brittle 400-line SQL CASE statement with a locally hosted Llama 3.1 classifier for raw JSON logs from 6–7 systems: consolidated <strong>~70 error types into ~20 categories</strong>, reached <strong>~91% agreement</strong> with ~300 hand-labeled messages, and run it every 15 minutes in Airflow with data kept in-house.</li>
+              <li>Own production dbt models on Snowflake; reconciled conflicting site and project metrics across 6–7 source tables into <strong>one source of truth</strong> and retired the inaccurate tables.</li>
+              <li>Audited the site-to-project model in Oracle and found <strong>~37K orphaned projects</strong> (about 1 in 5) and ~9.7K orphaned sites; built creation-time validation that blocks unlinked records.</li>
+            </ul>
+            <p class="tools">dbt · Snowflake · Oracle · Llama 3.1 · Airflow · Python · SQL</p>
+            <p class="client">Client: Global payments platform</p>
+            <ul>
+              <li>Tuned Spark ETL through partitioning, resource tuning and query fixes, <strong>cutting processing costs by 40%</strong>; wrote the skew handling (key salting, repartitioning, broadcast joins) for jobs dominated by a few high-volume merchants.</li>
+              <li>Contributed to Kafka and Spark Structured Streaming pipelines (watermarking, checkpointing, transaction-ID deduplication) and fraud features such as merchant velocity, built with ML engineers.</li>
+              <li>Built partitioned bronze/silver/gold datasets on an S3 lakehouse and optimized Trino queries with partition pruning for risk analysis and reporting.</li>
+            </ul>
+            <p class="tools">PySpark · Kafka · Spark Structured Streaming · S3 · Trino · Python</p>
+          </div>
+        </article>
+        <article class="job">
+          <div class="job-l"><h3>Brillio</h3><span>Sep 2023 – Jul 2024 · Tampa, FL</span></div>
+          <div class="job-r">
+            <p class="role">Data Engineer</p>
+            <ul>
+              <li>Monitored activation and reporting health across <strong>10,000+ telecom sites</strong> in SQL, catching stalled and mis-reporting sites and cutting the team's weekly manual checks.</li>
+              <li>Built recurring reports that reconciled figures across 5+ source systems for accuracy and completeness.</li>
+            </ul>
+            <p class="tools">SQL · data validation · reporting</p>
+          </div>
+        </article>
+        <article class="job">
+          <div class="job-l"><h3>USC Auxiliary Services</h3><span>Feb 2022 – May 2023 · Los Angeles, CA</span></div>
+          <div class="job-r">
+            <p class="role">Business Data Analyst</p>
+            <ul>
+              <li>Built Power BI dashboards and semantic models that automated recurring reports, cutting weekly reporting time by <strong>~40%</strong>.</li>
+              <li>Gathered requirements with stakeholders and integrated data from 5+ systems into clean, reliable reporting.</li>
+            </ul>
+            <p class="tools">Power BI · SQL · semantic modeling</p>
+          </div>
+        </article>
       </div>
-      <div class="job">
-        <span class="when">Sep 2023 – Jun 2024 · Tampa, FL</span>
-        <h3>Data Engineer, Brillio</h3>
-        <ul>
-          <li>Monitored activation and reporting health across 10,000+ telecom sites with SQL, cutting the team's weekly manual status checks.</li>
-          <li>Built recurring reports that reconciled figures across 5+ source systems for accuracy and completeness.</li>
-        </ul>
+      <div class="edu">
+        <div><b>M.S. Electrical &amp; Computer Engineering</b><span>University of Southern California · 2023</span></div>
+        <div><b>B.Tech. Electrical &amp; Communication Engineering</b><span>Gujarat Technological University · 2021</span></div>
       </div>
-      <div class="job">
-        <span class="when">Feb 2022 – May 2023 · Los Angeles, CA</span>
-        <h3>Business Data Analyst, USC Auxiliary Services</h3>
-        <ul>
-          <li>Built Power BI dashboards and semantic models that cut weekly reporting time by ~40%.</li>
-          <li>Integrated data from 5+ systems into clean reporting datasets.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="edu">
-      <div><b>M.S. Electrical &amp; Computer Engineering</b><span>University of Southern California · 2023</span></div>
-      <div><b>B.Tech. Electrical &amp; Communication Engineering</b><span>Gujarat Technological University · 2021</span></div>
     </div>
   </section>
 
-  <section id="fun">
-    <div class="sec-head">
-      <p class="label">Off the clock</p>
-      <h2>Outside of work, I'm still collecting data</h2>
-      <p>Mostly about food, and about how many ways I can lose at chess.</p>
+  <!-- ================= §3 SKILLS ================= -->
+  <section class="sec" id="skills" aria-labelledby="skills-h">
+    <div class="mark"><b>§3</b>Skills</div>
+    <div class="body">
+      <h2 id="skills-h">Skills and how I work</h2>
+      <dl class="skills">
+        <div class="sk core"><dt>Core, used daily</dt><dd>SQL, Python, PySpark, dbt, Snowflake, data modeling, Airflow, Dagster, data quality &amp; testing</dd></div>
+        <div class="sk"><dt>Pipelines &amp; cloud</dt><dd>Kafka, Debezium CDC, Spark Structured Streaming, Apache Iceberg, Parquet, S3 lakehouse, AWS (S3, EMR, Glue, Kinesis, Lambda, Athena, IAM), GCP, Fivetran, Terraform, Docker, Git, CI/CD</dd></div>
+        <div class="sk"><dt>Warehouses &amp; engines</dt><dd>Snowflake, BigQuery, Databricks, Delta Lake, Redshift, Trino, Oracle, PostgreSQL, MySQL</dd></div>
+        <div class="sk"><dt>GenAI &amp; ML</dt><dd>Locally hosted LLMs (Llama, Mistral), LLM evaluation, prompt engineering, text classification, ML feature pipelines</dd></div>
+        <div class="sk"><dt>BI &amp; reporting</dt><dd>Tableau, Looker, Power BI, pandas</dd></div>
+      </dl>
+      <div class="about">
+        <p>Most of my favorite work starts with numbers that don't agree. I trace the problem back to its source, fix it there, and add the check that stops it from coming back.</p>
+        <p>A pipeline that crashes pages someone in five minutes. Wrong data that looks fine can sit in a report for days. So I put tests between layers, validation where data enters, and loads that can re-run without creating duplicates.</p>
+        <p>I started as a data analyst at USC, which is why I think about the people reading the dashboard, not only the pipeline feeding it. I can explain a data issue without jargon, and I work closely with analysts, data scientists and ML engineers.</p>
+      </div>
     </div>
+  </section>
 
-    <div class="fun-grid">
-      <div class="panel">
-        <div>
-          <h3>My food log</h3>
-          <p class="sub">I'm a vegetarian and a picky eater, so every new restaurant is a careful experiment. Click a column to re-run the query.</p>
-        </div>
+  <!-- ================= APPENDIX ================= -->
+  <section class="sec" id="appendix" aria-labelledby="app-h">
+    <div class="mark"><b>A</b>Appendix</div>
+    <div class="body">
+      <div>
+        <h2 id="app-h">Off the clock, still collecting data</h2>
+        <p class="lede">Mostly about food, and about how many ways I can lose at chess.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Off the clock">
+        <button class="tab" role="tab" type="button" id="tab-food" aria-controls="p-food" aria-selected="true">Food log</button>
+        <button class="tab" role="tab" type="button" id="tab-chess" aria-controls="p-chess" aria-selected="false" tabindex="-1">Chess puzzle</button>
+        <button class="tab" role="tab" type="button" id="tab-quiz" aria-controls="p-quiz" aria-selected="false" tabindex="-1">Quiz</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-food" aria-labelledby="tab-food">
+        <div><h3>My food log</h3><p class="sub2">I'm a vegetarian and a picky eater, so every new restaurant is a careful experiment. Click a column to re-run the query.</p></div>
         <div class="sql" id="foodSql"><span class="k">SELECT</span> cuisine, go_to_order, rating
 <span class="k">FROM</span> food_log
 <span class="k">WHERE</span> vegetarian = <span class="o">TRUE</span>
@@ -619,274 +655,141 @@ table.food{width:100%;border-collapse:collapse;font-size:.9rem}
               <th scope="col" data-k="order"><button type="button">go_to_order</button></th>
               <th scope="col" data-k="rating" aria-sort="descending"><button type="button">rating</button></th>
             </tr></thead>
-            <tbody><tr>
-    <td class="c">Indian</td>
-    <td>Paneer anything, dal, dosa<small>The baseline every other result is compared to</small></td>
-    <td class="r">10/10<span class="bar"><i style="width:100%"></i></span></td></tr><tr>
-    <td class="c">Homemade</td>
-    <td>White chocolate lemon cookies (baked by me)<small>Shipped to every office potluck. Zero rows left over.</small></td>
-    <td class="r">10/10<span class="bar"><i style="width:100%"></i></span></td></tr><tr>
-    <td class="c">Italian</td>
-    <td>Margherita pizza, pesto pasta<small>Has never failed a data-quality check</small></td>
-    <td class="r">9/10<span class="bar"><i style="width:90%"></i></span></td></tr><tr>
-    <td class="c">Mediterranean</td>
-    <td>Falafel, hummus, halloumi<small>Falafel: the most reliable vegetarian join key</small></td>
-    <td class="r">9/10<span class="bar"><i style="width:90%"></i></span></td></tr><tr>
-    <td class="c">Mexican</td>
-    <td>Bean burrito, guacamole<small>Guacamole is a core table, not an optional join</small></td>
-    <td class="r">9/10<span class="bar"><i style="width:90%"></i></span></td></tr><tr>
-    <td class="c">Thai</td>
-    <td>Green curry with tofu, pad thai<small>Spice level is a parameter. Tune carefully.</small></td>
-    <td class="r">8/10<span class="bar"><i style="width:80%"></i></span></td></tr><tr>
-    <td class="c">Ethiopian</td>
-    <td>Misir wot with injera<small>On the list. Pending first load.</small></td>
-    <td class="r"><span class="null">NULL</span></td></tr></tbody>
+            <tbody></tbody>
           </table>
         </div>
         <p class="foot">7 rows returned. Small dataset on purpose: still sampling.</p>
       </div>
 
-      <div class="panel">
-        <div>
-          <h3>Learning chess</h3>
-          <p class="sub">I'm very new and mostly losing on chess.com. This is the first pattern I learned. White to move: can you find checkmate in one?</p>
-        </div>
-        <div class="board" id="board" role="grid" aria-label="Chess puzzle board"><button type="button" class="sq d" data-sq="a8" aria-label="a8"><span class="co">8</span></button><button type="button" class="sq l" data-sq="b8" aria-label="b8"></button><button type="button" class="sq d" data-sq="c8" aria-label="c8"></button><button type="button" class="sq l" data-sq="d8" aria-label="d8"></button><button type="button" class="sq d" data-sq="e8" aria-label="e8"></button><button type="button" class="sq l" data-sq="f8" aria-label="f8"></button><button type="button" class="sq d" data-sq="g8" aria-label="g8 black king"><span class="">♚</span></button><button type="button" class="sq l" data-sq="h8" aria-label="h8"></button><button type="button" class="sq l" data-sq="a7" aria-label="a7"><span class="co">7</span></button><button type="button" class="sq d" data-sq="b7" aria-label="b7"></button><button type="button" class="sq l" data-sq="c7" aria-label="c7"></button><button type="button" class="sq d" data-sq="d7" aria-label="d7"></button><button type="button" class="sq l" data-sq="e7" aria-label="e7"></button><button type="button" class="sq d" data-sq="f7" aria-label="f7 black pawn"><span class="">♟</span></button><button type="button" class="sq l" data-sq="g7" aria-label="g7 black pawn"><span class="">♟</span></button><button type="button" class="sq d" data-sq="h7" aria-label="h7 black pawn"><span class="">♟</span></button><button type="button" class="sq d" data-sq="a6" aria-label="a6"><span class="co">6</span></button><button type="button" class="sq l" data-sq="b6" aria-label="b6"></button><button type="button" class="sq d" data-sq="c6" aria-label="c6"></button><button type="button" class="sq l" data-sq="d6" aria-label="d6"></button><button type="button" class="sq d" data-sq="e6" aria-label="e6"></button><button type="button" class="sq l" data-sq="f6" aria-label="f6"></button><button type="button" class="sq d" data-sq="g6" aria-label="g6"></button><button type="button" class="sq l" data-sq="h6" aria-label="h6"></button><button type="button" class="sq l" data-sq="a5" aria-label="a5"><span class="co">5</span></button><button type="button" class="sq d" data-sq="b5" aria-label="b5"></button><button type="button" class="sq l" data-sq="c5" aria-label="c5"></button><button type="button" class="sq d" data-sq="d5" aria-label="d5"></button><button type="button" class="sq l" data-sq="e5" aria-label="e5"></button><button type="button" class="sq d" data-sq="f5" aria-label="f5"></button><button type="button" class="sq l" data-sq="g5" aria-label="g5"></button><button type="button" class="sq d" data-sq="h5" aria-label="h5"></button><button type="button" class="sq d" data-sq="a4" aria-label="a4"><span class="co">4</span></button><button type="button" class="sq l" data-sq="b4" aria-label="b4"></button><button type="button" class="sq d" data-sq="c4" aria-label="c4"></button><button type="button" class="sq l" data-sq="d4" aria-label="d4"></button><button type="button" class="sq d" data-sq="e4" aria-label="e4"></button><button type="button" class="sq l" data-sq="f4" aria-label="f4"></button><button type="button" class="sq d" data-sq="g4" aria-label="g4"></button><button type="button" class="sq l" data-sq="h4" aria-label="h4"></button><button type="button" class="sq l" data-sq="a3" aria-label="a3"><span class="co">3</span></button><button type="button" class="sq d" data-sq="b3" aria-label="b3"></button><button type="button" class="sq l" data-sq="c3" aria-label="c3"></button><button type="button" class="sq d" data-sq="d3" aria-label="d3"></button><button type="button" class="sq l" data-sq="e3" aria-label="e3"></button><button type="button" class="sq d" data-sq="f3" aria-label="f3"></button><button type="button" class="sq l" data-sq="g3" aria-label="g3"></button><button type="button" class="sq d" data-sq="h3" aria-label="h3"></button><button type="button" class="sq d" data-sq="a2" aria-label="a2"><span class="co">2</span></button><button type="button" class="sq l" data-sq="b2" aria-label="b2"></button><button type="button" class="sq d" data-sq="c2" aria-label="c2"></button><button type="button" class="sq l" data-sq="d2" aria-label="d2"></button><button type="button" class="sq d" data-sq="e2" aria-label="e2"></button><button type="button" class="sq l" data-sq="f2" aria-label="f2 white pawn"><span class="wp">♟</span></button><button type="button" class="sq d" data-sq="g2" aria-label="g2 white pawn"><span class="wp">♟</span></button><button type="button" class="sq l" data-sq="h2" aria-label="h2 white pawn"><span class="wp">♟</span></button><button type="button" class="sq l" data-sq="a1" aria-label="a1 white rook"><span class="wp">♜</span><span class="co">1a</span></button><button type="button" class="sq d" data-sq="b1" aria-label="b1"><span class="co">b</span></button><button type="button" class="sq l" data-sq="c1" aria-label="c1"><span class="co">c</span></button><button type="button" class="sq d" data-sq="d1" aria-label="d1"><span class="co">d</span></button><button type="button" class="sq l" data-sq="e1" aria-label="e1"><span class="co">e</span></button><button type="button" class="sq d" data-sq="f1" aria-label="f1"><span class="co">f</span></button><button type="button" class="sq l" data-sq="g1" aria-label="g1 white king"><span class="wp">♚</span><span class="co">g</span></button><button type="button" class="sq d" data-sq="h1" aria-label="h1"><span class="co">h</span></button></div>
-        <div class="chess-row">
-          <p class="chess-msg" id="chessMsg" aria-live="polite">Click the square where the white rook should go.</p>
-          <button class="linkbtn" type="button" id="chessReset">Reset</button>
+      <div class="panel" role="tabpanel" id="p-chess" aria-labelledby="tab-chess" hidden>
+        <div class="chess">
+          <div class="board" id="board" role="group" aria-label="Chess puzzle board"></div>
+          <div style="display:grid;gap:12px">
+            <h3>Learning chess</h3>
+            <p class="sub2">I'm very new and mostly losing on chess.com. This is the first pattern I learned. White to move: can you find checkmate in one?</p>
+            <p class="chess-msg" id="chessMsg" aria-live="polite">Click the square where the white rook should go.</p>
+            <button class="linkbtn" type="button" id="chessReset" style="justify-self:start">Reset</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="panel quiz">
-      <div>
-        <h3>What kind of data engineer are you?</h3>
-        <p class="sub">Two questions, no wrong answers. Data engineering experience not required.</p>
-      </div>
-      <div class="qs" id="quiz"><div class="q"><h4>How do you cut your sandwich?</h4>
-  <div class="opts" role="group" aria-label="How do you cut your sandwich?"><button type="button" class="qopt" aria-pressed="false" data-q="0" data-a="0"><span class="e" aria-hidden="true">◸</span>Diagonally</button><button type="button" class="qopt" aria-pressed="false" data-q="0" data-a="1"><span class="e" aria-hidden="true">▯</span>Straight down the middle</button><button type="button" class="qopt" aria-pressed="false" data-q="0" data-a="2"><span class="e" aria-hidden="true">▦</span>Into little squares</button><button type="button" class="qopt" aria-pressed="false" data-q="0" data-a="3"><span class="e" aria-hidden="true">🥪</span>I don't cut it</button></div>
-  <p class="trait" id="trait0"></p></div><div class="q"><h4>At a new restaurant, you…</h4>
-  <div class="opts" role="group" aria-label="At a new restaurant, you…"><button type="button" class="qopt" aria-pressed="false" data-q="1" data-a="0"><span class="e" aria-hidden="true">📖</span>Read the menu beforehand and practice my order</button><button type="button" class="qopt" aria-pressed="false" data-q="1" data-a="1"><span class="e" aria-hidden="true">🙋</span>Ask the server to pick</button><button type="button" class="qopt" aria-pressed="false" data-q="1" data-a="2"><span class="e" aria-hidden="true">🔁</span>Stick to my regular favorite</button><button type="button" class="qopt" aria-pressed="false" data-q="1" data-a="3"><span class="e" aria-hidden="true">🍽️</span>Order two dishes and share</button></div>
-  <p class="trait" id="trait1"></p></div></div>
-      <div class="result" id="quizResult" aria-live="polite">
-        <span class="label">Your result</span>
-        <p>Answer both questions to find out.</p>
+      <div class="panel" role="tabpanel" id="p-quiz" aria-labelledby="tab-quiz" hidden>
+        <div><h3>What kind of data engineer are you?</h3><p class="sub2">Two questions, no wrong answers. Data engineering experience not required.</p></div>
+        <div class="qs" id="quiz"></div>
+        <div class="result" id="quizResult" aria-live="polite"><span class="label">Your result</span><p>Answer both questions to find out.</p></div>
       </div>
     </div>
   </section>
 
-  <section id="contact">
-    <div class="contact">
-      <p class="label">Contact</p>
-      <h2>Let's talk about your data platform.</h2>
-      <p>I'm open to data engineering roles. The fastest way to reach me is email or LinkedIn.</p>
-      <div class="contact-row">
-        <button class="btn" type="button" id="copyEmail" title="Copy email address">devanshipandya44@gmail.com <span class="label" id="copyLbl">Copy</span></button>
-        <a class="btn" href="https://www.linkedin.com/in/devanshi4/" target="_blank" rel="noopener">linkedin.com/in/devanshi4</a>
-        <a class="btn" href="https://github.com/devanshi4" target="_blank" rel="noopener">github.com/devanshi4</a>
-      </div>
+  <section class="contact" id="contact" aria-labelledby="contact-h">
+    <p class="label" style="color:var(--accent)">Contact</p>
+    <h2 id="contact-h">Let's talk about your data platform.</h2>
+    <p>I'm open to data engineering roles in New York or remote. Email or LinkedIn is the fastest way to reach me.</p>
+    <p class="email">devanshipandya44@gmail.com</p>
+    <div class="row">
+      <button class="btn pri" type="button" id="copyEmail">Copy email <span class="copy-lbl" id="copyLbl"></span></button>
+      <a class="btn" href="https://www.linkedin.com/in/devanshi4/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/devanshi4" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="Devanshi_Pandya_Resume.pdf" target="_blank" rel="noopener">Résumé PDF</a>
     </div>
   </section>
+</div>
 </main>
 
-<footer><div class="wrap">© 2026 Devanshi Pandya</div></footer>
+<footer><div class="wrap"><span>© 2026 Devanshi Pandya</span><span>One HTML file, hand-written, on GitHub Pages</span></div></footer>
 
 <script>
-/* ---------- Featured: entity matching demo (records copied from telecom_aws/data/raw) ---------- */
+/* ---------- Case 1: entity matching demo (records from the synthetic dataset) ---------- */
 const SRC = {
-  inv: {name:"Network inventory", c:"var(--src1)"},
-  rf:  {name:"RF planning",       c:"var(--src2)"},
-  fo:  {name:"Field operations",  c:"var(--src3)"}
+  inv:{name:"Network inventory", c:"var(--src1)"},
+  rf:{name:"RF planning", c:"var(--src2)"},
+  fo:{name:"Field operations", c:"var(--src3)"}
 };
 const RECS = [
   {id:"NY-BRONX-017", s:"inv", nm:"BRONX GRAND CONCOURSE", ad:"1250 Grand Concourse · 10456", site:"S01", why:"Anchor record for this site"},
-  {id:"NY-BX-0017",   s:"inv", nm:"Bronx - Grand Concourse (legacy)", ad:"1250 GRAND CONCOURSE · 10456-2201", site:"S01", why:"Duplicate inside the same source: same address once ZIP+4 is trimmed"},
+  {id:"NY-BX-0017", s:"inv", nm:"Bronx - Grand Concourse (legacy)", ad:"1250 GRAND CONCOURSE · 10456-2201", site:"S01", why:"Duplicate inside the same source: same address once ZIP+4 is trimmed"},
   {id:"NY-BRONX-018", s:"inv", nm:"Grand Concourse South", ad:"1100 Grand Concourse · 10456", site:"S02", why:"Different house number, ~560 m away: a separate tower"},
-  {id:"RF-10017",     s:"rf",  nm:"Bronx Grand Concourse", ad:"40.83472, -73.91648", site:"S01", why:"Coordinates ~4 m from NY-BRONX-017"},
-  {id:"RF-10018",     s:"rf",  nm:"Grand Concourse & E 167th", ad:"40.82991, -73.91958", site:"S02", why:"Coordinates ~5 m from NY-BRONX-018"},
-  {id:"WO-55001",     s:"fo",  nm:"Bx Grand Concourse Site", ad:"1250 Grand Concourse, Bronx, NY 10456", site:"S01", why:"'Bx' = Bronx; house number and ZIP match"},
-  {id:"WO-55002",     s:"fo",  nm:"GRAND CONCOURSE - BRONX", ad:"1250 GRAND CONCRS BX NY 10456", site:"S01", why:"'CONCRS' standardized to CONCOURSE; also reports a newer equipment swap", flag:true},
-  {id:"WO-55003",     s:"fo",  nm:"Grand Concourse S.", ad:"1100 Grand Concourse Bronx NY 10456", site:"S02", why:"Only the house number differs from S01, and that is decisive"},
-  {id:"WO-55028",     s:"fo",  nm:"Concourse", ad:"Grand Concourse, Bronx NY", site:"REVIEW", why:"No house number, no ZIP: could be either tower", flag:true}
+  {id:"RF-10017", s:"rf", nm:"Bronx Grand Concourse", ad:"40.83472, -73.91648", site:"S01", why:"Coordinates ~4 m from NY-BRONX-017"},
+  {id:"RF-10018", s:"rf", nm:"Grand Concourse & E 167th", ad:"40.82991, -73.91958", site:"S02", why:"Coordinates ~5 m from NY-BRONX-018"},
+  {id:"WO-55001", s:"fo", nm:"Bx Grand Concourse Site", ad:"1250 Grand Concourse, Bronx, NY 10456", site:"S01", why:"'Bx' = Bronx; house number and ZIP match"},
+  {id:"WO-55002", s:"fo", nm:"GRAND CONCOURSE - BRONX", ad:"1250 GRAND CONCRS BX NY 10456", site:"S01", why:"'CONCRS' standardized to CONCOURSE; also reports a newer equipment swap", flag:true},
+  {id:"WO-55003", s:"fo", nm:"Grand Concourse S.", ad:"1100 Grand Concourse Bronx NY 10456", site:"S02", why:"Only the house number differs from S01, and that is decisive"},
+  {id:"WO-55028", s:"fo", nm:"Concourse", ad:"Grand Concourse, Bronx NY", site:"REVIEW", why:"No house number, no ZIP: could be either tower", flag:true}
 ];
-const lanesEl = document.getElementById("lanes");
-const statusEl = document.getElementById("mStatus");
-
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const lanesEl = document.getElementById("lanes"), statusEl = document.getElementById("mStatus");
 function recHTML(r, showWhy){
-  return `<div class="rec" data-id="${r.id}" style="--c:${SRC[r.s].c}">
-    <span class="id">${r.id}</span><span class="nm">${r.nm}</span><span class="ad">${r.ad}</span>
-    ${showWhy ? `<span class="why${r.flag ? " flag" : ""}">${r.why}</span>` : ""}</div>`;
+  return `<div class="rec" data-id="${r.id}" style="--c:${SRC[r.s].c}"><span class="id">${r.id}</span><span class="nm">${esc(r.nm)}</span><span class="ad">${esc(r.ad)}</span>${showWhy ? `<span class="why${r.flag ? " flag" : ""}">${esc(r.why)}</span>` : ""}</div>`;
 }
 function lane(title, sub, recs, cls, showWhy){
-  return `<div class="lane ${cls||""}"><div class="lane-h"><b>${title}</b><small>${sub}</small></div>${recs.map(r=>recHTML(r,showWhy)).join("")}</div>`;
+  return `<div class="lane ${cls||""}"><div class="lane-h"><span>${esc(title)}</span><small>${sub}</small></div>${recs.map(r=>recHTML(r,showWhy)).join("")}</div>`;
 }
 function render(mode){
   const first = {};
   lanesEl.querySelectorAll(".rec").forEach(el=>first[el.dataset.id]=el.getBoundingClientRect());
   let html = "";
+  lanesEl.classList.toggle("single", mode==="naive");
   if(mode==="raw"){
-    for(const k of ["inv","rf","fo"]){
-      const rs = RECS.filter(r=>r.s===k);
-      html += lane(SRC[k].name, rs.length+" records", rs);
-    }
-    statusEl.className="m-status";
+    for(const k of ["inv","rf","fo"]){ const rs = RECS.filter(r=>r.s===k); html += lane(SRC[k].name, rs.length+" records", rs); }
+    statusEl.className = "m-status";
     statusEl.textContent = "Three sources, nine records, no shared ID. How many towers are there?";
   } else if(mode==="naive"){
-    html += lane("Site A: “Grand Concourse”", "9 records merged", RECS, "result wrong");
-    statusEl.className="m-status badc";
+    html += lane("Site A: “Grand Concourse”", "9 records merged", RECS, "wrong");
+    statusEl.className = "m-status bad";
     statusEl.textContent = "Wrong: name matching merges two towers 560 m apart into one site and hides an ambiguous record.";
   } else {
-    html += lane("Site S01 · 1250 Grand Concourse", "5 records", RECS.filter(r=>r.site==="S01"), "result", true);
-    html += lane("Site S02 · 1100 Grand Concourse", "3 records", RECS.filter(r=>r.site==="S02"), "result", true);
-    html += lane("Manual review", "1 record", RECS.filter(r=>r.site==="REVIEW"), "result review", true);
-    statusEl.className="m-status good";
+    html += lane("Site S01 · 1250 Grand Concourse", "5 records", RECS.filter(r=>r.site==="S01"), "", true);
+    html += lane("Site S02 · 1100 Grand Concourse", "3 records", RECS.filter(r=>r.site==="S02"), "", true);
+    html += lane("Manual review", "1 record", RECS.filter(r=>r.site==="REVIEW"), "review", true);
+    statusEl.className = "m-status good";
     statusEl.textContent = "Correct: 2 towers plus 1 record held for review. This matches the answer key.";
   }
   lanesEl.innerHTML = html;
+  lanesEl.scrollLeft = 0;
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   lanesEl.querySelectorAll(".rec").forEach(el=>{
     const a = first[el.dataset.id]; if(!a) return;
-    const b = el.getBoundingClientRect();
-    const dx = a.left-b.left, dy = a.top-b.top;
-    if(!dx && !dy) return;
-    el.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:"none"}],{duration:520,easing:"cubic-bezier(.2,.8,.2,1)"});
+    const b = el.getBoundingClientRect(), dx = a.left-b.left, dy = a.top-b.top;
+    if(dx||dy) el.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:"none"}],{duration:500,easing:"cubic-bezier(.2,.8,.2,1)"});
   });
 }
-document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
-  document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
+document.querySelectorAll("#matcher .seg button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#matcher .seg button").forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
   render(b.dataset.mode);
 }));
 render("raw");
 
-/* ---------- Projects ---------- */
-const PROJECTS = [
-  {
-    name:"Market Pulse", tag:"Streaming · GCP", f:["streaming","dbt"],
-    sum:"A real-time pipeline for a simulated stock brokerage. Trades are captured from Postgres with change data capture, streamed through Kafka with live market prices, landed as Iceberg tables, and modeled into portfolio analytics.",
-    nums:["Trade every 3 s","Prices every 60 s","At-least-once delivery"],
-    tools:["Postgres","Debezium","Kafka","Iceberg","GCS","BigQuery","dbt","Dagster","Docker"],
-    flow:["Postgres WAL","Debezium CDC","Kafka","Micro-batch writer","Iceberg (bronze)","dbt silver/gold","BigQuery"],
-    why:[
-      "<b>CDC instead of app-published events.</b> Debezium reads the write-ahead log, so the stream can never drift from the database.",
-      "<b>Offsets committed only after a successful write.</b> A crash never loses data; duplicates are removed downstream.",
-      "<b>Lineage on every row.</b> Topic, partition, offset and CDC operation travel with the data for debugging."
-    ],
-    repo:"market-pulse"
-  },
-  {
-    name:"Weather Data Platform", tag:"Batch ELT · AWS", f:["aws","dbt"],
-    sum:"A scheduled Lambda pulls hourly weather for several cities into S3. Airflow loads it into Snowflake, and dbt turns it into a tested star schema.",
-    nums:["Idempotent at every layer","Incremental fact model","Tests between layers"],
-    tools:["Lambda","EventBridge","S3","Snowflake","dbt","Airflow","Docker"],
-    flow:["Open-Meteo API","Lambda (daily)","S3 raw JSON","COPY INTO","Snowflake RAW","dbt star schema"],
-    why:[
-      "<b>Re-running never duplicates.</b> Per-date S3 keys, COPY INTO file tracking and a QUALIFY dedupe all make retries safe.",
-      "<b>Incremental processing.</b> The fact table merges only rows past the watermark, so cost stays flat as history grows.",
-      "<b>Raw kept immutable.</b> The whole warehouse can be rebuilt from S3 if a transformation bug is found."
-    ],
-    repo:"weather-elt-snowflake"
-  },
-  {
-    name:"E-commerce Lakehouse", tag:"Streaming + batch · AWS", f:["aws","streaming","spark"],
-    sum:"Clickstream events stream in through Kinesis while daily orders arrive in batch. PySpark moves both through bronze, silver and gold layers on S3, queryable in Athena.",
-    nums:["5 events/s streamed","200 orders/day batch","5 gold tables"],
-    tools:["Kinesis","Lambda","S3","PySpark","Glue","Athena","Airflow","IAM"],
-    flow:["Kinesis","Lambda","S3 bronze","PySpark silver","PySpark gold","Glue Catalog","Athena"],
-    why:[
-      "<b>Both ingestion patterns in one platform.</b> Event-driven Lambda for streaming, a scheduled Airflow DAG for batch.",
-      "<b>Hive-style date partitions</b> keep Athena scans, and cost, small.",
-      "<b>Least-privilege IAM</b> with separate roles for Lambda and Glue."
-    ],
-    repo:"ecommerce-lakehouse-aws"
-  },
-  {
-    name:"Spark Performance Lab", tag:"Spark tuning", f:["spark"],
-    sum:"A lab where I reproduce Spark performance problems on a real multi-executor cluster, diagnose them in the Spark UI, and measure each fix. First up: a join where one merchant owns 21 of 30 million rows.",
-    nums:["Job 23 s → 17 s","Join stage 12.7 s → 2.4 s","Disk spill 274 MB → 0"],
-    tools:["PySpark 4.0","Spark UI","History Server","Python"],
-    flow:["Skewed join (baseline)","Investigate in Spark UI","AQE skew join","Salted join","Aggregate before join","Verify + compare"],
-    why:[
-      "<b>The skew was visible in one task:</b> it read 310 MB and ran 12.7 s while the median task took half a second.",
-      "<b>Changing the query beat tuning Spark:</b> aggregating before the join removed all spill and made the join stage 5× faster; AQE alone cut runtime 26%.",
-      "<b>Balanced isn't the same as fast:</b> salting evened out the tasks but added as much work as it saved, so the runtime didn't improve.",
-      "<b>Correctness first:</b> every fix returns exactly the same 7,200-row report as the baseline."
-    ],
-    repo:"spark-performance-lab", private:true
-  },
-  {
-    name:"Yelp Reviews Analytics", tag:"Analytics engineering", f:["dbt"],
-    sum:"A dbt project over 2,000+ Yelp reviews, layered into staging, intermediate and mart models with tests and documented lineage.",
-    nums:["2,000+ reviews","3 mart models","Lineage graph"],
-    tools:["Python","PostgreSQL","dbt","Hugging Face"],
-    flow:["Hugging Face dataset","Python loader","Postgres raw","dbt staging","dbt intermediate","dbt marts"],
-    why:[
-      "<b>Layered models</b> keep cleaning, business logic and reporting separate and testable.",
-      "<b>Scores built in SQL:</b> a product health score and reviewer-credibility indicators."
-    ],
-    repo:"yelp-reviews-dbt"
-  },
-  {
-    name:"Natural-Language SQL Assistant", tag:"GenAI", f:["ai"],
-    sum:"Ask a question in plain English and get an answer from a live PostgreSQL database. The app writes the SQL, runs it, and summarizes the result.",
-    nums:["Self-correcting SQL","5-table joins"],
-    tools:["LangChain","OpenAI","PostgreSQL","Streamlit"],
-    flow:["Question","Schema lookup","SQL generation","Run on Postgres","Plain-English answer"],
-    why:[
-      "<b>Self-correcting.</b> When generated SQL fails, the database error goes back to the model and it retries.",
-      "<b>Schema-aware prompts</b> let it handle joins across 15 tables."
-    ],
-    repo:"text-to-sql-assistant"
-  },
-  {
-    name:"Customer Churn Prediction", tag:"Machine learning", f:["ai"],
-    sum:"An XGBoost model that flags telecom customers likely to cancel, with SHAP explanations so support teams know why each customer is at risk.",
-    nums:["7,043 customers","ROC-AUC 0.82","60% precision on churners"],
-    tools:["Python","XGBoost","SHAP","Streamlit"],
-    flow:["Raw customer data","Clean + encode","XGBoost","SHAP explanations","Streamlit app"],
-    why:[
-      "<b>Explainable over black-box.</b> SHAP shows contract type, tenure and monthly charges as the top churn drivers; month-to-month customers leave most.",
-      "<b>Measured honestly.</b> Only 26.5% of customers churn, so I report ROC-AUC, precision and recall against an always-stays baseline, not just accuracy.",
-      "<b>What-if scenarios.</b> Managers can change a customer's plan and see the risk update."
-    ],
-    repo:"telecom-churn-prediction"
-  }
-];
-const grid = document.getElementById("grid");
-grid.innerHTML = PROJECTS.map(p=>`
-  <article class="card" data-f="${p.f.join(" ")}">
-    <div class="card-top"><h3>${p.name}</h3><span class="tag">${p.tag}</span></div>
-    <p class="sum">${p.sum}</p>
-    <div class="numbers">${p.nums.map(n=>`<span>${n}</span>`).join("")}</div>
-    <div class="tools">${p.tools.map(t=>`<span>${t}</span>`).join("")}</div>
-    <details>
-      <summary>Architecture &amp; decisions</summary>
-      <div class="deep">
-        <div class="flow">${p.flow.map(s=>`<span>${s}</span>`).join("<em>→</em>")}</div>
-        <ul>${p.why.map(w=>`<li>${w}</li>`).join("")}</ul>
-      </div>
-    </details>
-    <div class="links">${p.private ? `<a href="#contact">Code available on request →</a>` : `<a href="https://github.com/devanshi4/${p.repo}" target="_blank" rel="noopener">View code →</a>`}</div>
-  </article>`).join("");
-
-document.querySelectorAll("#filters .chip").forEach(c=>c.addEventListener("click",()=>{
-  document.querySelectorAll("#filters .chip").forEach(x=>x.setAttribute("aria-pressed", String(x===c)));
-  const f = c.dataset.f;
-  grid.querySelectorAll(".card").forEach(card=>{
-    card.hidden = !(f==="all" || card.dataset.f.split(" ").includes(f));
-  });
-}));
-
 /* ---------- Copy email ---------- */
 document.getElementById("copyEmail").addEventListener("click", async ()=>{
-  const lbl=document.getElementById("copyLbl");
-  try{ await navigator.clipboard.writeText("devanshipandya44@gmail.com"); lbl.textContent="Copied"; }
-  catch(e){ const r=document.createRange(); r.selectNodeContents(document.getElementById("copyEmail").firstChild.parentNode); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); lbl.textContent="Selected"; }
-  setTimeout(()=>lbl.textContent="Copy",2000);
+  const lbl = document.getElementById("copyLbl"), addr = "devanshipandya44@gmail.com";
+  try{ await navigator.clipboard.writeText(addr); lbl.textContent = "Copied"; }
+  catch(e){ const r = document.createRange(); r.selectNodeContents(document.querySelector(".email")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); lbl.textContent = "Selected"; }
+  setTimeout(()=>lbl.textContent = "", 2000);
+});
+
+/* ---------- Appendix tabs ---------- */
+const tabs = [...document.querySelectorAll(".tab")];
+function selectTab(t, focus){
+  tabs.forEach(x=>{
+    const on = x===t;
+    x.setAttribute("aria-selected", String(on));
+    x.tabIndex = on ? 0 : -1;
+    document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
+  });
+  if(focus) t.focus();
+}
+tabs.forEach((t,i)=>{
+  t.addEventListener("click",()=>selectTab(t));
+  t.addEventListener("keydown",e=>{
+    if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
+      e.preventDefault();
+      selectTab(tabs[(i + (e.key==="ArrowRight"?1:-1) + tabs.length) % tabs.length], true);
+    }
+  });
 });
 
 /* ---------- Food log ---------- */
-const FOOD=[
+const FOOD = [
   {cuisine:"Indian", order:"Paneer anything, dal, dosa", rating:10, note:"The baseline every other result is compared to"},
   {cuisine:"Italian", order:"Margherita pizza, pesto pasta", rating:9, note:"Has never failed a data-quality check"},
   {cuisine:"Mediterranean", order:"Falafel, hummus, halloumi", rating:9, note:"Falafel: the most reliable vegetarian join key"},
@@ -895,68 +798,67 @@ const FOOD=[
   {cuisine:"Homemade", order:"White chocolate lemon cookies (baked by me)", rating:10, note:"Shipped to every office potluck. Zero rows left over."},
   {cuisine:"Ethiopian", order:"Misir wot with injera", rating:null, note:"On the list. Pending first load."}
 ];
-let foodSort={k:"rating",dir:"desc"};
-const esc=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+let foodSort = {k:"rating", dir:"desc"};
 function drawFood(){
-  const {k,dir}=foodSort;
-  const rows=[...FOOD].sort((a,b)=>{
-    const x=a[k], y=b[k];
+  const {k, dir} = foodSort;
+  const rows = [...FOOD].sort((a,b)=>{
+    const x = a[k], y = b[k];
     if(x===null) return 1; if(y===null) return -1;
     const c = typeof x==="number" ? x-y : x.localeCompare(y);
-    return dir==="asc"?c:-c;
+    return dir==="asc" ? c : -c;
   });
-  const col = k==="order"?"go_to_order":k;
+  const col = k==="order" ? "go_to_order" : k;
   document.getElementById("foodSql").innerHTML =
-    `<span class="k">SELECT</span> cuisine, go_to_order, rating\n<span class="k">FROM</span> food_log\n<span class="k">WHERE</span> vegetarian = <span class="o">TRUE</span>\n<span class="k">ORDER BY</span> ${col} <span class="k">${dir.toUpperCase()}</span>${k==="rating"?' <span class="k">NULLS LAST</span>':""};`;
+    `<span class="k">SELECT</span> cuisine, go_to_order, rating\n<span class="k">FROM</span> food_log\n<span class="k">WHERE</span> vegetarian = <span class="o">TRUE</span>\n<span class="k">ORDER BY</span> ${col} <span class="k">${dir.toUpperCase()}</span>${k==="rating" ? ' <span class="k">NULLS LAST</span>' : ""};`;
   document.querySelector("#foodTable tbody").innerHTML = rows.map(r=>`<tr>
     <td class="c">${esc(r.cuisine)}</td>
     <td>${esc(r.order)}<small>${esc(r.note)}</small></td>
-    <td class="r">${r.rating===null?'<span class="null">NULL</span>':`${r.rating}/10<span class="bar"><i style="width:${r.rating*10}%"></i></span>`}</td></tr>`).join("");
+    <td class="r">${r.rating===null ? '<span class="null">NULL</span>' : `${r.rating}/10<span class="mini"><i style="width:${r.rating*10}%"></i></span>`}</td></tr>`).join("");
   document.querySelectorAll("#foodTable th").forEach(th=>{
-    if(th.dataset.k===k) th.setAttribute("aria-sort", dir==="asc"?"ascending":"descending"); else th.removeAttribute("aria-sort");
+    if(th.dataset.k===k) th.setAttribute("aria-sort", dir==="asc" ? "ascending" : "descending"); else th.removeAttribute("aria-sort");
   });
 }
 document.querySelectorAll("#foodTable th button").forEach(b=>b.addEventListener("click",()=>{
-  const k=b.parentElement.dataset.k;
-  foodSort = foodSort.k===k ? {k, dir: foodSort.dir==="asc"?"desc":"asc"} : {k, dir: k==="rating"?"desc":"asc"};
+  const k = b.parentElement.dataset.k;
+  foodSort = foodSort.k===k ? {k, dir: foodSort.dir==="asc" ? "desc" : "asc"} : {k, dir: k==="rating" ? "desc" : "asc"};
   drawFood();
 }));
 drawFood();
 
 /* ---------- Chess puzzle: back-rank mate, Ra1-a8# ---------- */
-const START={a1:"wR", g1:"wK", f2:"wP", g2:"wP", h2:"wP", g8:"bK", f7:"bP", g7:"bP", h7:"bP"};
-const GLYPH={wR:"♜", wK:"♚", wP:"♟", bK:"♚", bP:"♟"};
-let pos={...START}, solved=false;
-const boardEl=document.getElementById("board"), chessMsg=document.getElementById("chessMsg");
+const START = {a1:"wR", g1:"wK", f2:"wP", g2:"wP", h2:"wP", g8:"bK", f7:"bP", g7:"bP", h7:"bP"};
+const GLYPH = {wR:"♜", wK:"♚", wP:"♟", bK:"♚", bP:"♟"};
+let pos = {...START}, solved = false;
+const boardEl = document.getElementById("board"), chessMsg = document.getElementById("chessMsg");
 function drawBoard(win){
-  let h="";
-  for(let r=8;r>=1;r--) for(let f=0;f<8;f++){
-    const sq="abcdefgh"[f]+r, light=(f+r)%2===1, pc=pos[sq];
-    const co=(f===0?r:"")+(r===1?"abcdefgh"[f]:"");
-    h+=`<button type="button" class="sq ${light?"l":"d"}${win&&sq==="a8"?" win":""}" data-sq="${sq}" aria-label="${sq}${pc?" "+(pc[0]==="w"?"white ":"black ")+({R:"rook",K:"king",P:"pawn"})[pc[1]]:""}">${pc?`<span class="${pc[0]==="w"?"wp":""}">${GLYPH[pc]}</span>`:""}${co?`<span class="co">${co}</span>`:""}</button>`;
+  let h = "";
+  for(let r=8; r>=1; r--) for(let f=0; f<8; f++){
+    const sq = "abcdefgh"[f]+r, light = (f+r)%2===1, pc = pos[sq];
+    const co = (f===0 ? r : "") + (r===1 ? "abcdefgh"[f] : "");
+    h += `<button type="button" class="sq ${light?"l":"d"}${win&&sq==="a8"?" win":""}" data-sq="${sq}" aria-label="${sq}${pc?" "+(pc[0]==="w"?"white ":"black ")+({R:"rook",K:"king",P:"pawn"})[pc[1]]:""}">${pc?`<span class="${pc[0]==="w"?"wp":""}">${GLYPH[pc]}</span>`:""}${co?`<span class="co">${co}</span>`:""}</button>`;
   }
-  boardEl.innerHTML=h;
+  boardEl.innerHTML = h;
 }
-boardEl.addEventListener("click",e=>{
-  const b=e.target.closest(".sq"); if(!b||solved) return;
+boardEl.addEventListener("click", e=>{
+  const b = e.target.closest(".sq"); if(!b || solved) return;
   if(b.dataset.sq==="a8"){
-    pos={...START}; delete pos.a1; pos.a8="wR"; solved=true; drawBoard(true);
-    chessMsg.className="chess-msg good";
-    chessMsg.textContent="Checkmate! Rook to a8. The black king is trapped behind his own pawns. Better than I did the first time.";
+    pos = {...START}; delete pos.a1; pos.a8 = "wR"; solved = true; drawBoard(true);
+    chessMsg.className = "chess-msg good";
+    chessMsg.textContent = "Checkmate! Rook to a8. The black king is trapped behind his own pawns. Better than I did the first time.";
   } else {
     b.classList.remove("wrong"); void b.offsetWidth; b.classList.add("wrong");
-    chessMsg.className="chess-msg";
-    chessMsg.textContent="Not that one. Hint: look at the black king's back row.";
+    chessMsg.className = "chess-msg";
+    chessMsg.textContent = "Not that one. Hint: look at the black king's back row.";
   }
 });
 document.getElementById("chessReset").addEventListener("click",()=>{
-  pos={...START}; solved=false; drawBoard(false);
-  chessMsg.className="chess-msg"; chessMsg.textContent="Click the square where the white rook should go.";
+  pos = {...START}; solved = false; drawBoard(false);
+  chessMsg.className = "chess-msg"; chessMsg.textContent = "Click the square where the white rook should go.";
 });
 drawBoard(false);
 
 /* ---------- Quiz ---------- */
-const QUIZ=[
+const QUIZ = [
   {q:"How do you cut your sandwich?", a:[
     {e:"◸", t:"Diagonally", type:"The Optimizer", trait:"More edge per bite. You'd rewrite a query just to shave off two seconds."},
     {e:"▯", t:"Straight down the middle", type:"The Modeler", trait:"Clean, predictable halves. You love a well-defined schema."},
@@ -970,21 +872,21 @@ const QUIZ=[
     {e:"🍽️", t:"Order two dishes and share", trait:"never ships a decision without an A/B test."}
   ]}
 ];
-const picks=[null,null];
-const quizEl=document.getElementById("quiz"), resEl=document.getElementById("quizResult");
-quizEl.innerHTML=QUIZ.map((q,qi)=>`<div class="q"><h4>${q.q}</h4>
+const picks = [null,null];
+const quizEl = document.getElementById("quiz"), resEl = document.getElementById("quizResult");
+quizEl.innerHTML = QUIZ.map((q,qi)=>`<div class="q"><h4>${q.q}</h4>
   <div class="opts" role="group" aria-label="${q.q}">${q.a.map((a,ai)=>`<button type="button" class="qopt" aria-pressed="false" data-q="${qi}" data-a="${ai}"><span class="e" aria-hidden="true">${a.e}</span>${a.t}</button>`).join("")}</div>
   <p class="trait" id="trait${qi}"></p></div>`).join("");
-quizEl.addEventListener("click",e=>{
-  const b=e.target.closest(".qopt"); if(!b) return;
-  const qi=+b.dataset.q, ai=+b.dataset.a; picks[qi]=ai;
+quizEl.addEventListener("click", e=>{
+  const b = e.target.closest(".qopt"); if(!b) return;
+  const qi = +b.dataset.q, ai = +b.dataset.a; picks[qi] = ai;
   quizEl.querySelectorAll(`.qopt[data-q="${qi}"]`).forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
-  const a=QUIZ[qi].a[ai];
+  const a = QUIZ[qi].a[ai];
   document.getElementById("trait"+qi).textContent = qi===0 ? a.trait : "You're the engineer who "+a.trait;
   if(picks[0]!==null && picks[1]!==null){
-    const t=QUIZ[0].a[picks[0]], m=QUIZ[1].a[picks[1]];
-    resEl.className="result done";
-    resEl.innerHTML=`<span class="label">Your result</span><b>${t.type}</b><p>${t.trait.split(". ")[1]||t.trait} And you're the kind of engineer who ${m.trait} Tell me your result when you reach out.</p>`;
+    const t = QUIZ[0].a[picks[0]], m = QUIZ[1].a[picks[1]];
+    resEl.className = "result done";
+    resEl.innerHTML = `<span class="label">Your result</span><b>${t.type}</b><p>${t.trait.split(". ")[1]||t.trait} And you're the kind of engineer who ${m.trait} Tell me your result when you reach out.</p>`;
   }
 });
 
@@ -994,6 +896,5 @@ try{
   console.log("%cYou opened DevTools, so you're my kind of person.\nNo framework here: one HTML file, hand-written CSS and JS, hosted on GitHub Pages.\nIf you'd build it differently, I'd love to hear how: devanshipandya44@gmail.com\n\nSELECT * FROM candidates WHERE checks_the_console = TRUE;\n-- 1 row returned 🍪","font:13px ui-monospace,monospace;line-height:1.5");
 }catch(e){}
 </script>
-
-
-</body></html>
+</body>
+</html>
