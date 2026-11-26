@@ -387,7 +387,7 @@ footer .wrap{padding-block:24px 32px;font-size:.84rem;color:var(--faint);display
       <div class="stats">
         <div class="stat"><b>~37K</b><span>orphaned projects found in an Oracle audit, about 1 in 5</span><small>Telecom · now blocked at creation</small></div>
         <div class="stat"><b>~91%</b><span>agreement for a local Llama 3.1 log classifier</span><small>Telecom · replaced a 400-line SQL rule</small></div>
-        <div class="stat"><b>40%</b><span>lower Spark processing costs after ETL tuning</span><small>Payments · partitioning + query fixes</small></div>
+        <div class="stat"><b>70→20</b><span>error categories consolidated for the log classifier</span><small>Telecom · raw JSON from 6–7 systems</small></div>
         <div class="stat"><b>10K+</b><span>telecom sites monitored for activation health</span><small>Brillio · SQL checks</small></div>
       </div>
     </figure>
@@ -537,7 +537,7 @@ footer .wrap{padding-block:24px 32px;font-size:.84rem;color:var(--faint);display
         <div class="par">
           <div><span class="label">Problem</span><p>Clickstream events arrive continuously (about 5 per second) while orders arrive in a daily batch. Both need to land in one queryable model.</p></div>
           <div><span class="label">Approach</span><p>Event-driven Lambda for streaming, a scheduled Airflow DAG for batch, PySpark through bronze, silver and gold layers on S3, cataloged in Glue.</p></div>
-          <div><span class="label">Result</span><p class="res">5 gold tables queryable in Athena, with date partitions that keep scans and cost small.</p></div>
+          <div><span class="label">Result</span><p class="res">6 gold tables queryable in Athena, with date partitions that keep scans and cost small.</p></div>
         </div>
         <details class="why">
           <summary>Decisions and trade-offs</summary>
@@ -597,7 +597,7 @@ footer .wrap{padding-block:24px 32px;font-size:.84rem;color:var(--faint);display
             <p class="tools">dbt · Snowflake · Oracle · Llama 3.1 · Airflow · Python · SQL</p>
             <p class="client">Client: Global payments platform</p>
             <ul>
-              <li>Tuned Spark ETL through partitioning, resource tuning and query fixes, <strong>cutting processing costs by 40%</strong>; wrote the skew handling (key salting, repartitioning, broadcast joins) for jobs dominated by a few high-volume merchants.</li>
+              <li>Wrote the <strong>data-skew handling</strong> for large PySpark ETL jobs dominated by a few high-volume merchants: key salting, repartitioning and broadcast joins to cut shuffle overhead.</li>
               <li>Contributed to Kafka and Spark Structured Streaming pipelines (watermarking, checkpointing, transaction-ID deduplication) and fraud features such as merchant velocity, built with ML engineers.</li>
               <li>Built partitioned bronze/silver/gold datasets on an S3 lakehouse and optimized Trino queries with partition pruning for risk analysis and reporting.</li>
             </ul>
@@ -613,6 +613,18 @@ footer .wrap{padding-block:24px 32px;font-size:.84rem;color:var(--faint);display
               <li>Built recurring reports that reconciled figures across 5+ source systems for accuracy and completeness.</li>
             </ul>
             <p class="tools">SQL · data validation · reporting</p>
+          </div>
+        </article>
+        <article class="job">
+          <div class="job-l"><h3>Verizon</h3><span>May 2022 – Aug 2022 · Internship</span></div>
+          <div class="job-r">
+            <p class="role">Data Analyst Intern</p>
+            <ul>
+              <li>Improved customer churn prediction models with scikit-learn, raising accuracy by <strong>18%</strong> to support targeted retention campaigns.</li>
+              <li>Segmented the customer base with K-means and DBSCAN into cohorts for personalized marketing.</li>
+              <li>Designed A/B tests for new product features and turned the results into recommendations for non-technical stakeholders.</li>
+            </ul>
+            <p class="tools">Python · SQL · scikit-learn · A/B testing</p>
           </div>
         </article>
         <article class="job">
